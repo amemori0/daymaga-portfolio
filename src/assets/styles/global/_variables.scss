@@ -1,0 +1,118 @@
+@use "sass:math";
+
+@property --root-font-size {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 16px;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap");
+
+// ローカルフォントのNoto sans JPを優先して使用するためのフォントファイルを読み込む
+@font-face {
+  font-family: "Local Noto Sans JP";
+  src: local("Noto Sans JP");
+}
+
+:root {
+  /* inner */
+  --inner: min(1034px, 100%);
+  --padding-inner: 18.5px;
+
+  /* z-index */
+  --z-index-header: 900;
+  --z-index-header-drawer: 910;
+  --z-index-header-drawer-icon: 920;
+  --z-index-overlay: 930;
+
+  /* color */
+  --color-white: #fff;
+  --color-black: #000;
+
+  /* テキスト */
+  --color-text: #343436;
+  --color-text-sub: #676e87;
+  --color-text-dark: #135097;
+  --color-text-white: #ffffff;
+
+  /* 差し色（ボタン・ヘッダーなど） */
+  --color-primary: #135097;
+  --color-secondary: #629de2;
+
+  /* 地色（背景） */
+  --color-bg: #e6edf3;
+  --color-bg-accent: #629de2;
+
+  /* タグ */
+  --color-tag-bg: #daeff8;
+  --color-tag-text: #343436;
+
+  /* カテゴリ */
+  --color-category-01: #629de2;
+  --color-category-02: #135097;
+  --color-category-03: #42a0ad;
+  --color-category-04: #c88dec;
+  --color-category-05: #9c8cff;
+
+  --ease-in-sine: cubic-bezier(0.47, 0, 0.745, 0.715);
+  --ease-out-sine: cubic-bezier(0.39, 0.575, 0.565, 1);
+  --ease-in-out-sine: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+
+  --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+  --ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  --ease-in-quart: cubic-bezier(0.895, 0.03, 0.685, 0.22);
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+
+  --ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+
+  --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
+
+  --ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+  --ease-out-circ: cubic-bezier(0.075, 0.82, 0.165, 1);
+  --ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+
+  --ease-in-back: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  --ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-in-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* font-weight */
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-bold: 700;
+
+  /* ハーフ・レディングを打ち消すマイナス値を定義 */
+  --leading-trim: calc((1em - 1lh) / 2);
+
+  /* font-family */
+  --base-font-family: "Local Noto Sans JP", "Noto Sans JP", sans-serif;
+  --title-font-family: "Zen Maru Gothic", sans-serif;
+  --en-font-family: "Lato", sans-serif;
+
+  // 16pxを基準として、1pxあたりのremを計算
+  --to-rem: calc(tan(atan2(1px, var(--root-font-size))) * 1rem);
+
+  // how to use
+  // font-size: calc(16 * var(--to-rem));
+
+  /* transition duration */
+  --duration: 0.3s;
+
+  /* header height */
+  --header-height: 140px;
+
+  @media screen and (width >= 768px) {
+    --header-height: 142px;
+  }
+}

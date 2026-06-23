@@ -1,0 +1,5 @@
+@use "../global" as *;
+
+.l-main {
+  padding-block-start: var(--header-height);
+}

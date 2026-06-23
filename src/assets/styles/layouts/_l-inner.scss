@@ -1,0 +1,7 @@
+@use "../global" as *;
+
+.l-inner {
+  width: min(calc(var(--inner) + var(--padding-inner) * 2), 100%);
+  padding-inline: var(--padding-inner);
+  margin-inline: auto;
+}
