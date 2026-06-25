@@ -98,9 +98,10 @@ textarea {
 
 body {
   color: var(--color-text);
+  line-height: calc(100 / 100);
   font-family: var(--base-font-family);
   font-weight: var(--fw-regular);
-  background: var(--color-white);
+  background: var(--color-bg);
   text-autospace: normal;
   overflow-wrap: anywhere; /* 収まらない場合に折り返す */
   word-break: normal; /* 単語の分割はデフォルトに依存 */

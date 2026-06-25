@@ -1,2 +1,289 @@
 @use "../global" as *;
 
+.p-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: var(--z-index-header);
+}
+
+.p-header__inner {
+  --_logo-size: calc(260 * var(--to-rem));
+  --_inner-col-gap: calc(26 * var(--to-rem));
+
+  display: grid;
+  justify-content: space-between;
+  /* ロゴサイズ、ナビゲーション、SPナビゲーション */
+  grid-template-columns: var(--_logo-size) minmax(0, 1fr) max-content;
+
+  @media (max-width: 1340px) {
+    /* ロゴサイズ、SPナビゲーション */
+    grid-template-columns: var(--_logo-size) max-content;
+    column-gap: var(--_inner-col-gap);
+  }
+}
+
+.p-header__logo {
+  padding-block-start: calc(32 * var(--to-rem));
+  padding-inline-start: calc(48 * var(--to-rem));
+
+  @media (max-width: 1340px) {
+    padding-inline-start: calc(20 * var(--to-rem));
+  }
+}
+
+.p-header__nav {
+  --_nav-spacing-block: calc(24 * var(--to-rem));
+  --_nav-spacing-inline-start: calc(64 * var(--to-rem));
+  --_nav-spacing-inline-end: calc(54 * var(--to-rem));
+  --_nav-height: calc(99 * var(--to-rem));
+
+  display: flex;
+  padding-block: var(--_nav-spacing-block);
+  padding-inline: var(--_nav-spacing-inline-start) var(--_nav-spacing-inline-end);
+  height: var(--_nav-height);
+  background: var(--color-primary);
+  border-radius: 0 0 0 32px;
+  margin-inline-start: auto;
+
+  @media (max-width: 1340px) {
+    display: none;
+  }
+}
+
+.p-header__nav-list {
+  display: flex;
+  align-items: center;
+  column-gap: calc(48 * var(--to-rem));
+}
+
+.p-header__nav-link {
+  --_touch-target: calc(14.5 * var(--to-rem));
+
+  font-size: calc(16 * var(--to-rem));
+  font-weight: var(--fw-bold);
+  line-height: calc(120 / 100);
+  font-family: var(--roboto-font-family);
+  color: var(--color-text-white);
+  text-transform: uppercase;
+
+  padding-block: var(--_touch-target);
+  transition: opacity var(--duration) var(--ease-out-quad);
+
+  &:focus-visible {
+    opacity: 0.8;
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.p-header__button {
+  --_col-gap: calc(32 * var(--to-rem));
+
+  display: flex;
+  align-items: center;
+  column-gap: var(--_col-gap);
+  margin-inline-start: calc(48 * var(--to-rem));
+
+  @media (max-width: 1340px) {
+    display: none;
+  }
+}
+
+.p-header__button-search {
+  margin-inline-start: calc(var(--_col-gap) + var(--_extra-offset));
+}
+
+// ----------------------------------------
+// ドロワーボタン
+// ----------------------------------------
+
+.p-header__sp-buttons {
+  display: none;
+
+  @media (max-width: 1340px) {
+    --_sp-nav-spacing-block: calc(24 * var(--to-rem));
+    --_sp-nav-spacing-inline: calc(28 * var(--to-rem));
+
+    display: grid;
+    justify-self: end;
+    justify-items: center;
+    grid-template-areas:
+      "drawer"
+      "search";
+    row-gap: calc(32 * var(--to-rem));
+    padding-block: var(--_sp-nav-spacing-block);
+    padding-inline: var(--_sp-nav-spacing-inline);
+    background: var(--color-primary);
+    border-radius: 0 0 0 28px;
+  }
+}
+
+.p-header__drawer {
+  --_drawer-width: 36px;
+  --_drawer-line-gap: calc(8 * var(--to-rem));
+
+  width: var(--_drawer-width);
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--_drawer-line-gap);
+  grid-area: drawer;
+}
+.p-header__drawer-line {
+  --_drawer-line-thickness: 2.7px;
+
+  width: 100%;
+  height: var(--_drawer-line-thickness);
+  background: var(--color-white);
+
+  @media (forced-colors: active) {
+    background: ButtonText; //強制からモード対策
+  }
+}
+
+.p-header__drawer-search {
+  grid-area: search;
+}
+
+// ----------------------------------------
+// 最初に出しておくヘッダー
+// ----------------------------------------
+.p-header[data-status="start"] {
+  position: relative; //追従させない
+}
+
+// ----------------------------------------
+// 追従するヘッダー
+// ----------------------------------------
+.p-header[data-status="fixed"] {
+  translate: 0 -100%; //隠しておく
+  transition: translate var(--duration) var(--ease-out-quart);
+}
+
+.p-header[data-status="fixed"] .p-header__inner {
+  --_logo-size: calc(206 * var(--to-rem));
+
+  grid-template-columns: var(--_logo-size) minmax(0, 1fr) max-content;
+
+  @media (max-width: 1340px) {
+    --_logo-size: calc(160 * var(--to-rem));
+    --_inner-col-gap: calc(22 * var(--to-rem));
+
+    grid-template-columns: var(--_logo-size) max-content;
+    column-gap: var(--_inner-col-gap);
+  }
+}
+
+.p-header[data-status="fixed"][data-scroll="active"] {
+  translate: 0;
+}
+
+.p-header[data-status="fixed"] .p-header__logo {
+  padding-block-start: calc(29 * var(--to-rem));
+
+  @media (max-width: 1340px) {
+    padding-block-start: calc(20 * var(--to-rem));
+    padding-inline-start: calc(24 * var(--to-rem));
+  }
+}
+
+.p-header[data-status="fixed"] .p-header__sp-buttons {
+  @media (max-width: 1340px) {
+    --_fixed-sp-nav-spacing-block: calc(20 * var(--to-rem));
+    --_fixed-sp-nav-spacing-inline-start: calc(40 * var(--to-rem));
+    --_fixed-sp-nav-spacing-inline-end: calc(32 * var(--to-rem));
+
+    display: grid;
+    align-items: center;
+    grid-template-areas: "search drawer";
+    grid-template-columns: auto auto;
+    column-gap: calc(48 * var(--to-rem));
+    padding-block: var(--_fixed-sp-nav-spacing-block);
+    padding-inline-start: var(--_fixed-sp-nav-spacing-inline-start);
+    padding-inline-end: var(--_fixed-sp-nav-spacing-inline-end);
+  }
+}
+
+// ----------------------------------------
+// ドロワーメニュー
+// ----------------------------------------
+
+// ドロワーメニュー初期状態（非表示）
+.p-header__drawer-content {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: var(--z-index-header-drawer);
+
+  width: calc(240 * var(--to-rem));
+  height: calc(344 * var(--to-rem));
+  padding-block: calc(80 * var(--to-rem));
+  padding-inline: calc(72 * var(--to-rem));
+  background: var(--color-primary);
+  border-radius: 0 0 0 24px;
+
+  // 非表示のスタイル
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity var(--duration) var(--ease-out-quart),
+    visibility var(--duration) var(--ease-out-quart);
+}
+
+// 開いた状態
+.p-header__drawer-content[data-status="open"] {
+  visibility: visible;
+  opacity: 1;
+}
+
+// ×ボタンの位置
+.p-header__drawer-close {
+  --_touch-target-size: 44px;
+
+  position: absolute;
+  top: calc(24 * var(--to-rem));
+  right: calc(24 * var(--to-rem));
+  min-width: var(--_touch-target-size);
+  min-height: var(--_touch-target-size);
+  display: grid;
+  place-content: center;
+  color: var(--color-white);
+}
+
+.p-header__drawer-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: calc(32 * var(--to-rem));
+  text-align: center;
+}
+
+.p-header__drawer-link {
+  font-size: calc(16 * var(--to-rem));
+  font-weight: var(--fw-bold);
+  line-height: calc(120 / 100);
+  color: var(--color-text-white);
+  font-family: var(--roboto-font-family);
+  text-transform: uppercase;
+  
+  &:focus-visible {
+    opacity: 0.8;
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.p-header__drawer-search-button {
+  width: fit-content;
+  margin-inline: auto;
+  margin-block-start: calc(32 * var(--to-rem) + var(--leading-trim));
+}

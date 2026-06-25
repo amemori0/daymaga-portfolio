@@ -6,7 +6,7 @@
   initial-value: 16px;
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap");
 
 // ローカルフォントのNoto sans JPを優先して使用するためのフォントファイルを読み込む
 @font-face {
@@ -99,6 +99,7 @@
   --base-font-family: "Local Noto Sans JP", "Noto Sans JP", sans-serif;
   --title-font-family: "Zen Maru Gothic", sans-serif;
   --en-font-family: "Lato", sans-serif;
+  --roboto-font-family: "Roboto", sans-serif;
 
   // 16pxを基準として、1pxあたりのremを計算
   --to-rem: calc(tan(atan2(1px, var(--root-font-size))) * 1rem);

@@ -1,0 +1,20 @@
+.c-button-search {
+  --_touch-target-size: 44px;
+  --_extra-offset: calc(16 * var(--to-rem));
+
+  min-width: var(--_touch-target-size);
+  min-height: var(--_touch-target-size);
+  display: grid;
+  place-content: center;
+  transition: opacity var(--duration) var(--ease-out-quad);
+
+  &:focus-visible {
+    opacity: 0.8;
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}

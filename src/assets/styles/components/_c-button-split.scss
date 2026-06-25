@@ -1,0 +1,74 @@
+@use "../global" as *;
+
+.c-button-split {
+  --_border-width: 1px;
+  --_radius-outer: 8px;
+  --_radius-inner: calc(var(--_radius-outer) - var(--_border-width));
+
+  --_label-padding-block: calc(2 * var(--to-rem));
+  --_label-padding-inline: calc(4 * var(--to-rem));
+
+  --_text-padding-block: calc(4 * var(--to-rem));
+  --_text-padding-inline: calc(20 * var(--to-rem));
+
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  border: var(--_border-width) solid var(--color-white);
+  border-radius: var(--_radius-outer);
+  overflow: hidden;
+
+  transition:
+    translate var(--duration) var(--ease-out-cubic),
+    opacity var(--duration) var(--ease-out-cubic);
+
+  &:focus-visible {
+    translate: 0 4px;
+    opacity: 0.8;
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      translate: 0 4px;
+      opacity: 0.8;
+    }
+  }
+}
+
+.c-button-split[data-status="primary"] .c-button-split__label {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.c-button-split[data-status="primary"] .c-button-split__text {
+  background: var(--color-white);
+  color: var(--color-primary);
+}
+
+.c-button-split[data-status="secondary"] .c-button-split__label {
+  background: var(--color-white);
+  color: var(--color-primary);
+}
+
+.c-button-split[data-status="secondary"] .c-button-split__text {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.c-button-split__label {
+  padding-block: var(--_label-padding-block);
+  padding-inline: var(--_label-padding-inline);
+  font-family: var(--roboto-font-family);
+  font-weight: var(--fw-bold);
+  font-size: calc(12 * var(--to-rem));
+  line-height: calc(20px / 12px);
+}
+
+.c-button-split__text {
+  padding-block: var(--_text-padding-block);
+  padding-inline: var(--_text-padding-inline);
+  font-family: var(--roboto-font-family);
+  font-weight: var(--fw-bold);
+  font-size: calc(16 * var(--to-rem));
+  line-height: calc(20px / 12px);
+}
