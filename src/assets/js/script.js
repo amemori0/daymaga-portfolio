@@ -2,6 +2,7 @@
 import "./_scroll.js";
 import "./_drawer.js";
 import "./_viewport.js";
+import "./_swiper-mv.js";
 import "./_smooth.js";
 
 

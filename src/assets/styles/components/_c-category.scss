@@ -1,0 +1,37 @@
+@use "../global" as *;
+
+.c-card__category {
+  --category-padding-block: calc(4 * var(--to-rem));
+  --category-padding-inline: calc(20 * var(--to-rem));
+
+  padding-block: var(--category-padding-block);
+  padding-inline: var(--category-padding-inline);
+  border-radius: 6px;
+  border: 1px solid currentColor;
+  width: fit-content;
+
+  @include mq(md) {
+    --category-padding-inline: calc(16 * var(--to-rem));
+  }
+}
+
+.c-category-label {
+  font-size: clamp(calc(13 * var(--to-rem)), 2cqi, calc(18 * var(--to-rem)));
+}
+
+// カテゴリーごとの色指定
+.c-card__category[data-category="new"] {
+  color: var(--color-category-new);
+}
+
+.c-card__category[data-category="tips"] {
+  color: var(--color-category-tips);
+}
+
+.c-card__category[data-category="interview"] {
+  color: var(--color-category-interview);
+}
+
+.c-card__category[data-category="news"] {
+  color: var(--color-category-news);
+}

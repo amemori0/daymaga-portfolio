@@ -1,0 +1,28 @@
+@use "../global" as *;
+
+.c-tag {
+  --tag-padding-block: calc(2 * var(--to-rem));
+  --tag-padding-inline-start: calc(8 * var(--to-rem));
+  --tag-padding-inline-end: calc(12 * var(--to-rem));
+
+  padding-block: var(--tag-padding-block);
+  padding-inline: var(--tag-padding-inline-start) var(--tag-padding-inline-end);
+  background: var(--color-tag-bg);
+  border-radius: 24px;
+
+  font-size: calc(12 * var(--to-rem));
+  line-height: calc(180 / 100);
+  transition: background var(--duration) var(--ease-out-sine);
+
+  &:focus-visible {
+    color: var(--color-tag-bg);
+    background: var(--color-black);
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      color: var(--color-tag-bg);
+      background: var(--color-black);
+    }
+  }
+}

@@ -1,0 +1,64 @@
+@use "../global" as *;
+
+.c-card {
+  border-radius: 12px;
+  background: var(--color-white);
+  box-shadow: 0px 5px 30px 0px oklch(29.1% 0.07 258.6 / 20%);
+}
+
+.c-card__link {
+  --_card-padding: calc(16 * var(--to-rem));
+
+  display: block;
+  padding: var(--_card-padding);
+}
+
+.c-card__img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 270 / 157;
+}
+
+.c-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.c-card__body {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 4;
+  row-gap: calc(8 * var(--to-rem));
+  margin-block-start: calc(12 * var(--to-rem));
+}
+
+.c-card__date {
+  font-size: calc(12 * var(--to-rem));
+  line-height: calc(120 / 100);
+  color: var(--color-text-sub);
+}
+
+.c-card__title {
+  font-size: calc(15 * var(--to-rem));
+  font-weight: var(--fw-medium);
+  line-height: calc(140 / 100);
+  letter-spacing: 0.02em;
+}
+
+.c-card[data-status="large"] .c-card__link {
+  --_card-padding: calc(28 * var(--to-rem));
+
+  @include mq(md) {
+    --_card-padding: calc(16 * var(--to-rem));
+  }
+}
+
+.c-card[data-status="large"] .c-card__date {
+  font-size: clamp(calc(12 * var(--to-rem)), 2cqi, calc(14 * var(--to-rem)));
+}
+
+.c-card[data-status="large"] .c-card__title {
+  font-size: clamp(calc(15 * var(--to-rem)), 2cqi, calc(20 * var(--to-rem)));
+}

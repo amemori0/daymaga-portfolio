@@ -1,0 +1,31 @@
+@use "../global" as *;
+
+// ========================================
+// MVのナビゲーション
+// ========================================
+
+.c-swiper-nav {
+  width: calc(104 * var(--to-rem));
+  height: calc(104 * var(--to-rem));
+  transition: opacity var(--duration) var(--ease-out-quad);
+
+  // Swiperのデフォルトスタイルを上書き
+  &::after {
+    display: none; // Swiperデフォルトの矢印を非表示
+  }
+
+  &:focus-visible {
+    opacity: 0.7;
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+.c-swiper-nav svg {
+  width: 100%;
+  height: 100%;
+}

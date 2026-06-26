@@ -1,3 +1,5 @@
+@use "../global" as *;
+
 .c-button-search {
   --_touch-target-size: 44px;
   --_extra-offset: calc(16 * var(--to-rem));
