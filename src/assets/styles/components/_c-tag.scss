@@ -9,9 +9,12 @@
   padding-inline: var(--tag-padding-inline-start) var(--tag-padding-inline-end);
   background: var(--color-tag-bg);
   border-radius: 24px;
+  flex-wrap: nowrap;
+  overflow: hidden;
 
   font-size: calc(12 * var(--to-rem));
   line-height: calc(180 / 100);
+  white-space: nowrap;
   transition: background var(--duration) var(--ease-out-sine);
 
   &:focus-visible {

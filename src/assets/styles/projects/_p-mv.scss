@@ -8,7 +8,7 @@
   --_clamp-max: 63;
   --_clamp: clamp(
     calc(var(--_clamp-min) * var(--to-rem)),
-    calc((var(--_clamp-min) - (var(--_clamp-max) - var(--_clamp-min)) / (1440 - 375) * 375) * var(--to-rem) + (var(--_clamp-max) - var(--_clamp-min)) / (1440 - 375) * 100vi),
+    calc((var(--_clamp-min) - (var(--_clamp-max) - var(--_clamp-min)) / (1440 - 390) * 390) * var(--to-rem) + (var(--_clamp-max) - var(--_clamp-min)) / (1440 - 375) * 100vi),
     calc(var(--_clamp-max) * var(--to-rem))
   );
 

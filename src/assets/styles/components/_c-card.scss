@@ -4,6 +4,17 @@
   border-radius: 12px;
   background: var(--color-white);
   box-shadow: 0px 5px 30px 0px oklch(29.1% 0.07 258.6 / 20%);
+  transition: opacity var(--duration) var(--ease-out-cubic);
+
+  &:focus-visible {
+    opacity: 0.8;
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }
 
 .c-card__link {
@@ -45,6 +56,13 @@
   font-weight: var(--fw-medium);
   line-height: calc(140 / 100);
   letter-spacing: 0.02em;
+}
+
+.c-card__title-inner {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .c-card[data-status="large"] .c-card__link {

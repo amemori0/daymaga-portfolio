@@ -1,0 +1,46 @@
+@use "../global" as *;
+
+.c-button-more {
+  --_border-width: 2px;
+  
+  --_base-padding-y: calc(8 * var(--to-rem));
+  --_base-padding-x: calc(28 * var(--to-rem));
+
+  --_padding-y: calc(var(--_base-padding-y) - var(--_border-width));
+  --_padding-x: calc(var(--_base-padding-x) - var(--_border-width));
+
+  display: inline-block;
+  padding: var(--_padding-y) var(--_padding-x);
+  border-radius: 20px 20px 0 20px;
+  background: var(--color-primary);
+  border: var(--_border-width) solid var(--color-primary);
+
+  transition:
+    background var(--duration) var(--ease-out-sine),
+    color var(--duration) var(--ease-out-sine);
+
+  &:focus-visible {
+    background: var(--color-white);
+    .c-button-more__text {
+      color: var(--color-primary);
+    }
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      background: var(--color-white);
+      .c-button-more__text {
+        color: var(--color-primary);
+      }
+    }
+  }
+}
+
+.c-button-more__text {
+  font-size: clamp(calc(18 * var(--to-rem)), 3cqi, calc(20 * var(--to-rem)));
+  font-weight: var(--fw-bold);
+  line-height: calc(180 / 100);
+  letter-spacing: 0.02em;
+  font-family: var(--title-font-family);
+  color: var(--color-text-white);
+}

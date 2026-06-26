@@ -1,0 +1,35 @@
+@use "../global" as *;
+
+.p-top-new {
+  padding-block-start: calc(40 * var(--to-rem));
+}
+
+.p-top-new__inner {
+  width: min(calc(986 * var(--to-rem) + 44 * var(--to-rem) * 2), 100%);
+  padding-inline: calc(44 * var(--to-rem));
+  margin-inline: auto;
+}
+
+.p-top-new__list {
+  --_columns: 3;
+
+  display: grid;
+  grid-template-columns: repeat(var(--_columns), minmax(0, 1fr));
+  column-gap: calc(40 * var(--to-rem));
+  margin-block-start: calc(48 * var(--to-rem) + var(--leading-trim));
+
+  @include mq(md) {
+    --_columns: 1;
+    row-gap: calc(20 * var(--to-rem));
+    margin-block-start: calc(32 * var(--to-rem) + var(--leading-trim));
+  }
+}
+
+.p-top-new__button-wrap {
+  margin-block-start: clamp(calc(32 * var(--to-rem)), 5cqi, calc(48 * var(--to-rem)));
+  text-align: center;
+
+  @include mq(md) {
+    text-align: right;
+  }
+}
