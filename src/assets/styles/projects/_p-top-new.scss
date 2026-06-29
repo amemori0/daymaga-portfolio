@@ -1,13 +1,20 @@
 @use "../global" as *;
 
 .p-top-new {
-  padding-block-start: calc(40 * var(--to-rem));
+  padding-block: calc(40 * var(--to-rem));
 }
 
 .p-top-new__inner {
   width: min(calc(986 * var(--to-rem) + 44 * var(--to-rem) * 2), 100%);
   padding-inline: calc(44 * var(--to-rem));
   margin-inline: auto;
+}
+
+.p-top-new__title {
+  @include mq(md) {
+    width: fit-content;
+    margin-inline-end: auto;
+  }
 }
 
 .p-top-new__list {

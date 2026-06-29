@@ -17,7 +17,7 @@
               <a href="<?php echo esc_url(home_url("/")); ?>" class="c-card__link" tabindex="-1">
                 
                 <div class="c-card__img">
-                  <img src="<?php echo esc_url(get_theme_file_uri("/assets/images/image_sample_01.webp")); ?>" alt="" width="540" height="304">
+                  <img src="<?php echo esc_url(get_theme_file_uri("/assets/images/image_sample_01.webp")); ?>" alt="" width="540" height="304" fetchpriority="high">
                 </div>
                 
                 <div class="c-card__body">
@@ -49,7 +49,7 @@
               <a href="<?php echo esc_url(home_url("/")); ?>" class="c-card__link" tabindex="-1">
                 
                 <div class="c-card__img">
-                  <img src="<?php echo esc_url(get_theme_file_uri("/assets/images/image_sample_01.webp")); ?>" alt="" width="540" height="304" loading="lazy" decoding="async">
+                  <img src="<?php echo esc_url(get_theme_file_uri("/assets/images/image_sample_01.webp")); ?>" alt="" width="540" height="304" fetchpriority="high" loading="lazy" decoding="async">
                 </div>
                 
                 <div class="c-card__body">
@@ -79,7 +79,7 @@
               <a href="<?php echo esc_url(home_url("/")); ?>" class="c-card__link" tabindex="-1">
                 
                 <div class="c-card__img">
-                  <img src="<?php echo esc_url(get_theme_file_uri("/assets/images/image_sample_01.webp")); ?>" alt="" width="540" height="304">
+                  <img src="<?php echo esc_url(get_theme_file_uri("/assets/images/image_sample_01.webp")); ?>" alt="" width="540" height="304" fetchpriority="high">
                 </div>
                 
                 <div class="c-card__body">
@@ -108,11 +108,11 @@
       </div>
 
       <div class="p-mv__swiper-button-wrap">
-        <div class="c-swiper-nav p-mv__swiper-prev swiper-button-prev" role="button" aria-label="前のスライドへ">
-          <?php include get_theme_file_path("/assets/images/arrow-left.svg"); ?>
+        <div class="c-swiper-nav p-mv__swiper-prev swiper-button-prev" data-status="dark" role="button" aria-label="前のスライドへ">
+          <?php include get_theme_file_path("/assets/images/arrow_left_dark.svg"); ?>
         </div>
-        <div class="c-swiper-nav p-mv__swiper-next swiper-button-next" role="button" aria-label="次のスライドへ">
-          <?php include get_theme_file_path("/assets/images/arrow-right.svg"); ?>
+        <div class="c-swiper-nav p-mv__swiper-next swiper-button-next" data-status="dark" role="button" aria-label="次のスライドへ">
+          <?php include get_theme_file_path("/assets/images/arrow_right_dark.svg"); ?>
         </div>
       </div>
     </div>    

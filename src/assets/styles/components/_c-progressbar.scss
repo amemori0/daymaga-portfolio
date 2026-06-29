@@ -1,0 +1,12 @@
+@use "../global" as *;
+
+.c-progressbar {
+  --_progressbar-bg-color: #dde1f0;
+  --_progressbar-active-color: #135097;
+  background: var(--_progressbar-bg-color);
+}
+
+/* activeな部分 */
+.c-progressbar .swiper-pagination-progressbar-fill {
+  background: var(--_progressbar-active-color);
+}

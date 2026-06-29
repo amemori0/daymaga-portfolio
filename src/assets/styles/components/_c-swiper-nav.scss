@@ -1,18 +1,30 @@
 @use "../global" as *;
 
 // ========================================
-// MVのナビゲーション
+// ナビゲーション
 // ========================================
 
 .c-swiper-nav {
-  width: calc(104 * var(--to-rem));
-  height: calc(104 * var(--to-rem));
-  transition: opacity var(--duration) var(--ease-out-quad);
-
-  // Swiperのデフォルトスタイルを上書き
+  // Swiperのデフォルトスタイルをリセット
+  position: static;
+  width: auto;
+  height: auto;
+  margin-top: 0;
+  color: inherit;
   &::after {
     display: none; // Swiperデフォルトの矢印を非表示
   }
+}
+
+.c-swiper-nav svg {
+  width: 100%;
+  height: 100%;
+}
+
+.c-swiper-nav[data-status="dark"] {
+  width: calc(104 * var(--to-rem));
+  height: calc(104 * var(--to-rem));
+  transition: opacity var(--duration) var(--ease-out-quad);
 
   &:focus-visible {
     opacity: 0.7;
@@ -25,7 +37,23 @@
   }
 }
 
-.c-swiper-nav svg {
-  width: 100%;
-  height: 100%;
+.c-swiper-nav[data-status="white"] {
+  color: var(--color-white); // 通常時：白い矢印・白いボーダー
+  background: transparent; // 通常時：透明背景
+  border-radius: 50%;
+  transition:
+    color var(--duration) var(--ease-out-quad),
+    background var(--duration) var(--ease-out-quad);
+
+  @media (any-hover: hover) {
+    &:hover {
+      color: var(--color-secondary); // hover時：青い矢印・青いボーダー
+      background: var(--color-white); // hover時：白背景
+    }
+  }
+
+  &:focus-visible {
+    color: var(--color-secondary);
+    background: var(--color-white);
+  }
 }

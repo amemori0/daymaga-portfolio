@@ -4,7 +4,7 @@
 
     <div class="p-header__logo">
       <a href="<?php echo esc_url(home_url("/")); ?>" translate="no">
-        <?php include get_theme_file_path("/assets/images/logo__fixed.svg"); ?>
+        <?php include get_theme_file_path("/assets/images/logo_fixed.svg"); ?>
       </a>
     </div>
 
