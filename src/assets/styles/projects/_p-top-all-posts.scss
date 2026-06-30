@@ -1,0 +1,156 @@
+@use "../global" as *;
+
+.p-top-all-posts {
+  --_clamp-min: 48;
+  --_clamp-max: 64;
+  --_clamp: clamp(
+    calc(var(--_clamp-min) * var(--to-rem)),
+    calc((var(--_clamp-min) - (var(--_clamp-max) - var(--_clamp-min)) / (1440 - 375) * 375) * var(--to-rem) + (var(--_clamp-max) - var(--_clamp-min)) / (1440 - 375) * 100vi),
+    calc(var(--_clamp-max) * var(--to-rem))
+  );
+  container-type: inline-size;
+  padding-block: var(--_clamp);
+}
+
+.p-top-all-posts__tab-wrap {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 1em;
+
+  @include mq(md) {
+    justify-content: end;
+  }
+}
+
+.p-top-all-posts__tabs {
+  display: flex;
+  align-items: center;
+  column-gap: calc(12 * var(--to-rem));
+  margin-block-start: calc(48 * var(--to-rem) + var(--leading-trim));
+
+  @include mq(md) {
+    position: absolute;
+    top: calc(48 * var(--to-rem));
+    right: 0;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: calc(8 * var(--to-rem));
+    margin-block-start: 0;
+  }
+
+  @media (max-width: 560px) {
+    top: calc(46 * var(--to-rem));
+  }
+
+  @media (max-width: 500px) {
+    top: calc(44 * var(--to-rem));
+  }
+}
+
+.p-top-all-posts__sort {
+  --_sort-space: calc(4.5 * var(--to-rem));
+  --_sort-edge-offset: clamp(calc(8 * var(--to-rem)), 4cqi, calc(34 * var(--to-rem)));
+
+  display: flex;
+  align-items: end;
+  column-gap: calc(12 * var(--to-rem));
+  margin-block-end: var(--_sort-space);
+  padding-inline-end: var(--_sort-edge-offset);
+
+  @include mq(md) {
+    justify-content: end;
+  }
+}
+
+.p-top-all-posts__sort-button {
+  font-size: clamp(calc(14 * var(--to-rem)), 3cqi, calc(18 * var(--to-rem)));
+  line-height: calc(130 / 100);
+  color: var(--color-text-sub);
+
+  @include mq(md) {
+    margin-block-start: calc(20 * var(--to-rem));
+  }
+}
+
+.p-top-all-posts__sort-button:first-child {
+  --_line-color: #676e87;
+
+  padding-inline-end: calc(12 * var(--to-rem));
+  border-inline-end: 1px solid var(--_line-color);
+}
+
+/* アクティブ時 */
+.p-top-all-posts__sort-button[aria-pressed="true"] {
+  color: var(--color-primary);
+  pointer-events: none;
+}
+
+.p-top-all-posts__contents {
+  width: min(calc(1034 * var(--to-rem)), 100%);
+  height: auto;
+
+  @include mq(md) {
+    padding-inline-end: calc(27 * var(--to-rem));
+  }
+}
+
+.p-top-all-posts__card-list {
+  --_columns: 3;
+  --_gap: calc(32 * var(--to-rem));
+  --_inner-padding: calc(32 * var(--to-rem));
+  --_tab-clearance: 0;
+
+  display: grid;
+  grid-template-columns: repeat(var(--_columns), minmax(0, 1fr));
+  gap: var(--_gap);
+  padding: var(--_inner-padding);
+  background: gray;
+  border-radius: 0 16px 16px 16px;
+
+  @media (max-width: 949px) {
+    --_columns: 2;
+  }
+
+  @media (max-width: 749px) {
+    --_columns: 1;
+    --_gap: calc(12 * var(--to-rem));
+  }
+
+  @include mq(md) {
+    --_inner-padding: calc(12 * var(--to-rem));
+    --_tab-clearance: calc(12 * var(--to-rem));
+    margin-inline-end: var(--_tab-clearance);
+    border-radius: 16px 0 16px 16px;
+  }
+}
+
+.p-top-all-posts__card-item {
+  &:nth-child(n + 10) {
+    display: none;
+  }
+
+  // 950px未満：最大6枚 ＝ 7枚目以降（7, 8, 9...）を非表示
+  //（750px未満も最大6枚で共通なため、ここで一括コントロール）
+  @media (max-width: 949px) {
+    &:nth-child(n + 7) {
+      display: none;
+    }
+  }
+}
+
+.p-top-all-posts__card-tags {
+  display: flex;
+  align-items: center;
+  column-gap: calc(8 * var(--to-rem));
+}
+
+.p-top-all-posts__button-wrap {
+  margin-block-start: clamp(calc(20 * var(--to-rem)), 4cqi, calc(30 * var(--to-rem)));
+  text-align: right;
+
+  @include mq(md) {
+    text-align: center;
+  }
+}

@@ -32,6 +32,12 @@
   }
 }
 
+.p-top-new__card-tags {
+  display: flex;
+  align-items: center;
+  column-gap: calc(8 * var(--to-rem));
+}
+
 .p-top-new__button-wrap {
   margin-block-start: clamp(calc(32 * var(--to-rem)), 5cqi, calc(48 * var(--to-rem)));
   text-align: center;

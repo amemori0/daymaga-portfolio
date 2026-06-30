@@ -1,0 +1,62 @@
+@use "../global" as *;
+
+.c-tab {
+  --_tab-padding-y: calc(6 * var(--to-rem)) calc(4 * var(--to-rem));
+  --_tab-padding-x: calc(20 * var(--to-rem));
+  padding-block: var(--_tab-padding-y);
+  padding-inline: var(--_tab-padding-x);
+  border-radius: 12px 12px 0 0;
+  border: 1px solid currentColor;
+  width: fit-content;
+  background: var(--color-white);
+
+  font-size: clamp(calc(14 * var(--to-rem)), 2cqi, calc(16 * var(--to-rem)));
+  font-weight: var(--fw-medium);
+  line-height: calc(150 / 100);
+  color: currentColor;
+  text-transform: uppercase;
+
+  @include mq(md) {
+    --_tab-padding-y: calc(10 * var(--to-rem)) calc(6 * var(--to-rem));
+    --_tab-padding-x: calc(12 * var(--to-rem));
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    border-radius: 0 12px 12px 0;
+  }
+}
+
+// 非表示状態（デフォルト）
+.c-tab__panel {
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  translate: 0 20px;
+  transition:
+    opacity var(--duration) var(--ease-out-quad),
+    translate var(--duration) var(--ease-out-quad);
+}
+
+// アクティブ状態
+.c-tab__panel[data-status="active"] {
+  opacity: 1;
+  visibility: visible;
+  height: fit-content;
+  translate: 0;
+}
+
+// タブごとの色指定
+.c-tab[data-category="new"] {
+  color: var(--color-category-new);
+}
+
+.c-tab[data-category="tips"] {
+  color: var(--color-category-tips);
+}
+
+.c-tab[data-category="interview"] {
+  color: var(--color-category-interview);
+}
+
+.c-tab[data-category="news"] {
+  color: var(--color-category-news);
+}

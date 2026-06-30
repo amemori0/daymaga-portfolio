@@ -33,10 +33,9 @@
 }
 
 .p-top-popular__inner {
-  --_inner-padding: calc(32 * var(--to-rem));
   container-type: inline-size;
-  width: min(calc(1040 * var(--to-rem) + var(--_inner-padding) * 2), 100%);
-  padding-inline: var(--_inner-padding);
+  width: min(calc(1039 * var(--to-rem) + 32 * var(--to-rem) * 2), 100%);
+  padding-inline: calc(32 * var(--to-rem));
   margin-inline: auto;
 }
 
@@ -112,20 +111,24 @@
 // ----------------------------------------
 
 .p-top-popular__swiper-pagination.swiper-pagination-horizontal {
+  --_pad-left: calc(188 * var(--to-rem));
+  --_pad-right: calc(213 * var(--to-rem));
   // 100% から左右の余白分× 2を引く
-  --_progressbar-width: calc(100% - var(--_inner-padding) * 2);
+  --_progressbar-width: calc(100% - var(--_pad-left) - var(--_pad-right));
   --_progressbar-height: 8px;
 
   position: absolute;
   top: calc(100% - 36px);
-  left: 50%;
-  translate: -50%;
+  left: var(--_pad-left);
+  translate: 0;
 
   width: var(--_progressbar-width);
   height: var(--_progressbar-height);
   border-radius: 4px;
 
   @include mq(md) {
+    --_pad-left: calc(32 * var(--to-rem));
+    --_pad-right: calc(38 * var(--to-rem));
     bottom: calc(40 * var(--to-rem));
   }
 }

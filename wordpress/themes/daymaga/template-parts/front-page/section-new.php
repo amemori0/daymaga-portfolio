@@ -27,7 +27,7 @@
                     <span class="c-category-label">TIPS</span>
                   </div>
                   
-                  <ul class="p-mv__card-tags" aria-label="記事のタグ">
+                  <ul class="p-top-new__card-tags" aria-label="記事のタグ">
                     <li class="c-tag">#コンサルファーム</li>
                     <li class="c-tag">#戦略</li>
                   </ul>
@@ -56,7 +56,7 @@
                     <span class="c-category-label">TIPS</span>
                   </div>
                   
-                  <ul class="p-mv__card-tags" aria-label="記事のタグ">
+                  <ul class="p-top-new__card-tags" aria-label="記事のタグ">
                     <li class="c-tag">#コンサルファーム</li>
                     <li class="c-tag">#戦略</li>
                   </ul>
@@ -85,7 +85,7 @@
                     <span class="c-category-label">TIPS</span>
                   </div>
                   
-                  <ul class="p-mv__card-tags" aria-label="記事のタグ">
+                  <ul class="p-top-new__card-tags" aria-label="記事のタグ">
                     <li class="c-tag">#コンサルファーム</li>
                   </ul>
                 </div>
