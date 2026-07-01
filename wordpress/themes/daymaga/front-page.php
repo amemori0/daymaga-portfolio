@@ -5,6 +5,7 @@
   <?php get_template_part("template-parts/front-page/section-new"); ?>
   <?php get_template_part("template-parts/front-page/section-popular"); ?>
   <?php get_template_part("template-parts/front-page/section-all-posts"); ?>
+  <?php get_template_part("template-parts/front-page/section-tag-filter"); ?>
 </main>
 
 <?php get_footer(); ?>

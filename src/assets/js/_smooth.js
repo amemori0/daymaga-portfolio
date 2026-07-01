@@ -2,20 +2,20 @@
  * スムーススクロールの初期化
  */
 const initializeSmoothScroll = () => {
-  document.addEventListener("click", handleClick, { capture: true });
+  document.addEventListener('click', handleClick, { capture: true });
 };
 
 /**
  * 固定ヘッダーのブロックサイズを取得
  */
 const getHeaderBlockSize = () => {
-  const header = document.querySelector("[data-fixed-header]");
-  if (!header) return "0";
+  const header = document.querySelector('[data-fixed-header]');
+  if (!header) return '0';
 
   const { position, blockSize } = window.getComputedStyle(header);
-  const isFixed = position === "fixed" || position === "sticky";
+  const isFixed = position === 'fixed' || position === 'sticky';
 
-  return isFixed ? blockSize : "0";
+  return isFixed ? blockSize : '0';
 };
 
 /**
@@ -25,11 +25,11 @@ const scrollToTarget = (element) => {
   const headerBlockSize = getHeaderBlockSize();
   element.style.scrollMarginBlockStart = headerBlockSize;
 
-  const isPrefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const scrollBehavior = isPrefersReduced ? "instant" : "smooth";
+  const isPrefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const scrollBehavior = isPrefersReduced ? 'instant' : 'smooth';
 
-  element.scrollIntoView({ behavior: scrollBehavior, inline: "end" });
-  element.style.scrollMarginBlockStart = "";
+  element.scrollIntoView({ behavior: scrollBehavior, inline: 'end' });
+  element.style.scrollMarginBlockStart = '';
 };
 
 /**
@@ -39,7 +39,7 @@ const focusTarget = (element) => {
   element.focus({ preventScroll: true });
 
   if (document.activeElement !== element) {
-    element.setAttribute("tabindex", "-1");
+    element.setAttribute('tabindex', '-1');
     element.focus({ preventScroll: true });
   }
 };
@@ -57,22 +57,22 @@ const handleClick = (event) => {
 
   if (
     !hash ||
-    currentLink.getAttribute("role") === "tab" ||
-    currentLink.getAttribute("role") === "button" ||
-    currentLink.getAttribute("data-smooth-scroll") === "disabled"
+    currentLink.getAttribute('role') === 'tab' ||
+    currentLink.getAttribute('role') === 'button' ||
+    currentLink.getAttribute('data-smooth-scroll') === 'disabled'
   )
     return;
 
   const target =
     document.getElementById(decodeURIComponent(hash.slice(1))) ||
-    (hash === "#top" && document.body);
+    (hash === '#top' && document.body);
 
   if (target) {
     event.preventDefault();
     scrollToTarget(target);
     focusTarget(target);
-    if (!(hash === "#top")) {
-      history.pushState({}, "", hash);
+    if (!(hash === '#top')) {
+      history.pushState({}, '', hash);
     }
   }
 };
@@ -81,17 +81,17 @@ const handleClick = (event) => {
 // initializePopoverMenu.js
 // ------------------------------------------------------ */
 const initializePopoverMenu = (popoverElement) => {
-  const anchorLinks = popoverElement.querySelectorAll("a");
+  const anchorLinks = popoverElement.querySelectorAll('a');
 
   if (anchorLinks.length > 0) {
     anchorLinks.forEach((link) => {
       link.addEventListener(
-        "click",
+        'click',
         (event) => handleHashlinkClick(event, popoverElement),
         false
       );
       link.addEventListener(
-        "blur",
+        'blur',
         (event) => handleFocusableElementsBlur(event, popoverElement),
         false
       );
@@ -99,7 +99,7 @@ const initializePopoverMenu = (popoverElement) => {
   }
 
   popoverElement.addEventListener(
-    "click",
+    'click',
     (event) => handleBackdropClick(event, popoverElement),
     false
   );
@@ -134,7 +134,7 @@ const observeHeaderBlockSize = new ResizeObserver((entries) => {
     const blockSize = header.borderBoxSize[0].blockSize;
 
     document.documentElement.style.setProperty(
-      "--header-height",
+      '--header-height',
       `${blockSize}px`
     );
   }
@@ -143,12 +143,12 @@ const observeHeaderBlockSize = new ResizeObserver((entries) => {
 /**
  * 実行
  */
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   initializeSmoothScroll();
 
-  const header = document.querySelector("header");
+  const header = document.querySelector('header');
   if (header) observeHeaderBlockSize.observe(header);
 
-  const drawer = document.getElementById("drawer");
+  const drawer = document.getElementById('drawer');
   if (drawer) initializePopoverMenu(drawer);
 });

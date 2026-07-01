@@ -1,0 +1,96 @@
+@use "../global" as *;
+
+.c-tag-filter__header {
+  --_header-padding-block-start: calc(12 * var(--to-rem));
+  --_header-padding-block-end: calc(11 * var(--to-rem));
+  --_header-padding-inline-start: calc(24 * var(--to-rem));
+  --_header-padding-inline-end: calc(43 * var(--to-rem));
+
+  display: flex;
+  align-items: center;
+  column-gap: calc(14 * var(--to-rem));
+
+  padding-block: var(--_header-padding-block-start) var(--_header-padding-block-end);
+  padding-inline: var(--_header-padding-inline-start) var(--_header-padding-inline-end);
+  width: fit-content;
+  border-radius: 16px 16px 0 0;
+  background: var(--color-secondary);
+
+  @include mq(md) {
+    --_header-padding-block-start: calc(10 * var(--to-rem));
+    --_header-padding-inline-start: calc(16 * var(--to-rem));
+    --_header-padding-inline-end: calc(28 * var(--to-rem));
+  }
+}
+
+.c-tag-filter__header span {
+  font-size: clamp(calc(15 * var(--to-rem)), 2cqi, calc(18 * var(--to-rem)));
+  font-weight: var(--fw-bold);
+  line-height: calc(150 / 100);
+  letter-spacing: 0.15em;
+  font-family: var(--title-font-family);
+  color: var(--color-white);
+}
+
+.c-tag-filter__panel {
+  --_panel-padding-block-start: calc(24 * var(--to-rem));
+  --_panel-padding-block-end: calc(36 * var(--to-rem));
+  --_panel-padding-inline: calc(88 * var(--to-rem));
+
+  border: 1px solid var(--color-secondary);
+  border-radius: 0 20px 20px 20px;
+  background: var(--color-white);
+  padding-block: var(--_panel-padding-block-start) var(--_panel-padding-block-end);
+  padding-inline: var(--_panel-padding-inline);
+
+  @include mq(md) {
+    --_panel-padding-block-end: calc(24 * var(--to-rem));
+    --_panel-padding-inline: calc(12 * var(--to-rem));
+  }
+}
+
+.c-tag-filter__list {
+  display: flex;
+  flex-direction: column;
+  row-gap: calc(16 * var(--to-rem));
+
+  @include mq(md) {
+    row-gap: calc(12 * var(--to-rem));
+  }
+}
+
+.c-tag-filter__group {
+  --_border-line: #dde1f0;
+  --_border-space: calc(12 * var(--to-rem));
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: calc(40 * var(--to-rem));
+  padding-block-end: var(--_border-space);
+  border-block-end: 1px solid var(--_border-line);
+  width: fit-content; //下線を横幅全体ではなく要素の量に対して下線の長さを決めたいため
+
+  @include mq(md) {
+    --_border-space: calc(8 * var(--to-rem));
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: calc(8 * var(--to-rem));
+    width: auto; //spでは横幅全体に
+  }
+}
+.c-tag-filter__label {
+  font-size: clamp(calc(13 * var(--to-rem)), 2cqi, calc(14 * var(--to-rem)));
+  font-weight: var(--fw-bold);
+  line-height: calc(150 / 100);
+  letter-spacing: 0.01em;
+  color: var(--color-secondary);
+}
+
+.c-tag-filter__tag-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: calc(16 * var(--to-rem));
+
+  @include mq(md) {
+    gap: calc(8 * var(--to-rem));
+  }
+}

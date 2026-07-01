@@ -9,7 +9,7 @@
     calc(var(--_clamp-max) * var(--to-rem))
   );
   container-type: inline-size;
-  padding-block: var(--_clamp);
+  padding-block-start: var(--_clamp);
 }
 
 .p-top-all-posts__tab-wrap {

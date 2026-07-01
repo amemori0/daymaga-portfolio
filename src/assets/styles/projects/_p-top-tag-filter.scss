@@ -1,0 +1,16 @@
+@use "../global" as *;
+
+.p-top-tag-filter {
+  padding-block: calc(48 * var(--to-rem)) calc(64 * var(--to-rem));
+
+  @include mq(md) {
+    padding-block: calc(64 * var(--to-rem)) calc(48 * var(--to-rem));
+  }
+}
+
+.p-top-tag-filter__inner {
+  container-type: inline-size;
+  width: min(calc(816 * var(--to-rem) + 26 * var(--to-rem) * 2), 100%);
+  padding-inline: calc(26 * var(--to-rem));
+  margin-inline: auto;
+}

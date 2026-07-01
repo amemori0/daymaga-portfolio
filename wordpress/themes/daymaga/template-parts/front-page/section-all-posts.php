@@ -122,7 +122,7 @@
           </li>
 
         </ul>
-      </div>feat: すべての記事セクションを実装（タブ切り替え・カード一覧・レスポンシブ対応）
+      </div>
 
       <!-- 新着情報 -->
 <div class="c-tab__panel" id="panel1" role="tabpanel" aria-labelledby="tab1">
