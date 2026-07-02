@@ -8,7 +8,6 @@
     calc((var(--_clamp-min) - (var(--_clamp-max) - var(--_clamp-min)) / (1440 - 375) * 375) * var(--to-rem) + (var(--_clamp-max) - var(--_clamp-min)) / (1440 - 375) * 100vi),
     calc(var(--_clamp-max) * var(--to-rem))
   );
-  container-type: inline-size;
   padding-block-start: var(--_clamp);
 }
 
@@ -51,7 +50,7 @@
 
 .p-top-all-posts__sort {
   --_sort-space: calc(4.5 * var(--to-rem));
-  --_sort-edge-offset: clamp(calc(8 * var(--to-rem)), 4cqi, calc(34 * var(--to-rem)));
+  --_sort-edge-offset: calc(34 * var(--to-rem));
 
   display: flex;
   align-items: end;
@@ -60,16 +59,18 @@
   padding-inline-end: var(--_sort-edge-offset);
 
   @include mq(md) {
+    --_sort-edge-offset: calc(8 * var(--to-rem));
     justify-content: end;
   }
 }
 
 .p-top-all-posts__sort-button {
-  font-size: clamp(calc(14 * var(--to-rem)), 3cqi, calc(18 * var(--to-rem)));
+  font-size: calc(18 * var(--to-rem));
   line-height: calc(130 / 100);
   color: var(--color-text-sub);
 
   @include mq(md) {
+    font-size: calc(14 * var(--to-rem));
     margin-block-start: calc(20 * var(--to-rem));
   }
 }
@@ -147,10 +148,11 @@
 }
 
 .p-top-all-posts__button-wrap {
-  margin-block-start: clamp(calc(20 * var(--to-rem)), 4cqi, calc(30 * var(--to-rem)));
+  margin-block-start: calc(30 * var(--to-rem));
   text-align: right;
 
   @include mq(md) {
     text-align: center;
+    margin-block-start: calc(20 * var(--to-rem));
   }
 }

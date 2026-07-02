@@ -16,7 +16,11 @@
 }
 
 .c-category-label {
-  font-size: clamp(calc(13 * var(--to-rem)), 2cqi, calc(18 * var(--to-rem)));
+  font-size: calc(18 * var(--to-rem));
+
+  @include mq(md) {
+    font-size: calc(13 * var(--to-rem));
+  }
 }
 
 // カテゴリーごとの色指定

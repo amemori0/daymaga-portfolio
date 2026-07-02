@@ -15,10 +15,6 @@
   padding-block-start: var(--_clamp);
 }
 
-.p-mv__inner {
-  container-type: inline-size;
-}
-
 .p-mv__swiper-container {
   position: relative;
 }
@@ -34,7 +30,11 @@
 }
 
 .p-mv__swiper-slide:nth-of-type(odd) {
-  margin-block-start: clamp(calc(12 * var(--to-rem)), 4cqi, calc(40 * var(--to-rem)));
+  margin-block-start: calc(40 * var(--to-rem));
+
+  @include mq(md) {
+    margin-block-start: calc(12 * var(--to-rem));
+  }
 }
 
 .p-mv__card-img {

@@ -4,7 +4,6 @@
  */
 ?>
 <section class="p-mv">
-  <div class="p-mv__inner">
 
     <h2 class="u-sr-only">ピックアップ記事</h2>
     
@@ -116,6 +115,4 @@
         </div>
       </div>
     </div>    
-
-  </div>
 </section>

@@ -10,7 +10,7 @@
   width: fit-content;
   background: var(--color-white);
 
-  font-size: clamp(calc(14 * var(--to-rem)), 2cqi, calc(16 * var(--to-rem)));
+  font-size: calc(16 * var(--to-rem));
   font-weight: var(--fw-medium);
   line-height: calc(150 / 100);
   color: currentColor;
@@ -20,6 +20,7 @@
     --_tab-padding-y: calc(10 * var(--to-rem)) calc(6 * var(--to-rem));
     --_tab-padding-x: calc(12 * var(--to-rem));
     writing-mode: vertical-rl;
+    font-size: calc(14 * var(--to-rem));
     text-orientation: upright;
     border-radius: 0 12px 12px 0;
   }

@@ -39,10 +39,11 @@
 }
 
 .p-top-new__button-wrap {
-  margin-block-start: clamp(calc(32 * var(--to-rem)), 5cqi, calc(48 * var(--to-rem)));
+  margin-block-start: calc(48 * var(--to-rem));
   text-align: center;
 
   @include mq(md) {
     text-align: right;
+    margin-block-start: calc(32 * var(--to-rem));
   }
 }
