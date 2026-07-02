@@ -1,0 +1,34 @@
+@use "../global" as *;
+
+.p-cta {
+  --_clamp-min: 49;
+  --_clamp-max: 74;
+  --_clamp: clamp(
+    calc(var(--_clamp-min) * var(--to-rem)),
+    calc((var(--_clamp-min) - (var(--_clamp-max) - var(--_clamp-min)) / (1440 - 390) * 390) * var(--to-rem) + (var(--_clamp-max) - var(--_clamp-min)) / (1440 - 375) * 100vi),
+    calc(var(--_clamp-max) * var(--to-rem))
+  );
+  padding-block: var(--_clamp);
+
+  background-image: linear-gradient(90deg, rgb(17 115 178 / 90%), rgb(126 190 236 / 90%)), url("/assets/images/bg_cta.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.p-cta__inner {
+  container-type: inline-size;
+  display: grid;
+  place-content: center;
+}
+
+.p-cta__buttons {
+  display: flex;
+  justify-content: space-between;
+  column-gap: clamp(calc(10 * var(--to-rem)), 8cqi, calc(120 * var(--to-rem)));
+
+  @media (max-width: 920px) {
+    flex-direction: column;
+    row-gap: calc(calc(24 * var(--to-rem)) + calc(31 * var(--to-rem)));
+  }
+}

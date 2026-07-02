@@ -10,6 +10,7 @@
 
   --_text-padding-block: calc(4 * var(--to-rem));
   --_text-padding-inline: calc(20 * var(--to-rem));
+  --_text-icon-gap: 0px;
 
   display: flex;
   flex-direction: column;
@@ -35,6 +36,39 @@
   }
 }
 
+// ----------------------------------------
+// ベーススタイル
+// ----------------------------------------
+.c-button-split__label {
+  padding-block: var(--_label-padding-block);
+  padding-inline: var(--_label-padding-inline);
+
+  font-family: var(--roboto-font-family);
+  font-weight: var(--fw-bold);
+  font-size: calc(12 * var(--to-rem));
+  line-height: calc(20px / 12px);
+  white-space: nowrap;
+}
+
+.c-button-split__text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: var(--_text-icon-gap);
+
+  padding-block: var(--_text-padding-block);
+  padding-inline: var(--_text-padding-inline);
+  font-family: var(--roboto-font-family);
+  font-weight: var(--fw-bold);
+
+  font-size: calc(16 * var(--to-rem));
+  line-height: calc(20px / 12px);
+  white-space: nowrap;
+}
+
+// ----------------------------------------
+// primary
+// ----------------------------------------
 .c-button-split[data-status="primary"] .c-button-split__label {
   background: var(--color-primary);
   color: var(--color-white);
@@ -45,6 +79,9 @@
   color: var(--color-primary);
 }
 
+// ----------------------------------------
+// secondary
+// ----------------------------------------
 .c-button-split[data-status="secondary"] .c-button-split__label {
   background: var(--color-white);
   color: var(--color-primary);
@@ -55,20 +92,91 @@
   color: var(--color-white);
 }
 
-.c-button-split__label {
-  padding-block: var(--_label-padding-block);
-  padding-inline: var(--_label-padding-inline);
-  font-family: var(--roboto-font-family);
-  font-weight: var(--fw-bold);
-  font-size: calc(12 * var(--to-rem));
-  line-height: calc(20px / 12px);
+// ----------------------------------------
+// cta共通
+// ----------------------------------------
+.c-button-split[data-status="cta-primary"],
+.c-button-split[data-status="cta-secondary"] {
+  --_label-padding-block: calc(8 * var(--to-rem));
+  --_label-padding-inline: calc(16 * var(--to-rem));
+
+  --_text-padding-block: calc(16 * var(--to-rem));
+  --_text-padding-inline: calc(32 * var(--to-rem));
+  --_text-icon-gap: calc(10 * var(--to-rem));
+
+  position: relative;
+  overflow: visible; //primary、secondaryのボタンでoverflow hiddenをしているため
+  text-align: left;
+  border: none;
 }
 
-.c-button-split__text {
-  padding-block: var(--_text-padding-block);
-  padding-inline: var(--_text-padding-inline);
-  font-family: var(--roboto-font-family);
-  font-weight: var(--fw-bold);
-  font-size: calc(16 * var(--to-rem));
-  line-height: calc(20px / 12px);
+.c-button-split[data-status="cta-primary"] .c-button-split__label,
+.c-button-split[data-status="cta-secondary"] .c-button-split__label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  translate: 0 calc(-100% + calc(6 * var(--to-rem)));
+  z-index: 1;
+
+  border-radius: 8px 8px 8px 0;
+  width: fit-content;
+
+  font-size: calc(18 * var(--to-rem));
+  line-height: calc(130 / 100);
+  font-weight: var(--fw-medium);
+
+  @include mq(md) {
+    --_label-padding-block: calc(6 * var(--to-rem));
+    font-size: calc(14 * var(--to-rem));
+  }
+}
+
+.c-button-split[data-status="cta-primary"] .c-button-split__text,
+.c-button-split[data-status="cta-secondary"] .c-button-split__text {
+  border-radius: 0 8px 8px 8px;
+  width: fit-content;
+
+  font-size: calc(28 * var(--to-rem));
+  line-height: calc(16 / 24);
+  letter-spacing: 0.02em;
+
+  @include mq(md) {
+    --_text-padding-block: calc(12 * var(--to-rem));
+    --_text-padding-inline: calc(24 * var(--to-rem));
+    --_text-icon-gap: calc(6 * var(--to-rem));
+    font-size: calc(18 * var(--to-rem));
+  }
+}
+
+// ----------------------------------------
+// cta-primary
+// ----------------------------------------
+.c-button-split[data-status="cta-primary"] .c-button-split__label {
+  --_label-cta-bg: #2a84bf;
+
+  background: var(--_label-cta-bg);
+  color: var(--color-white);
+  border: 1px solid;
+}
+
+.c-button-split[data-status="cta-primary"] .c-button-split__text {
+  background: var(--color-white);
+  color: var(--color-primary);
+  font-family: var(--title-font-family);
+}
+
+// ----------------------------------------
+// cta-secondary
+// ----------------------------------------
+.c-button-split[data-status="cta-secondary"] .c-button-split__label {
+  background: var(--color-white);
+  color: var(--color-primary);
+}
+
+.c-button-split[data-status="cta-secondary"] .c-button-split__text {
+  border-radius: 0 12px 12px 12px;
+  background: transparent;
+  color: var(--color-white);
+  font-family: var(--title-font-family);
+  border: 2px solid;
 }

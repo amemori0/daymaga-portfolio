@@ -163,7 +163,11 @@
 // ----------------------------------------
 .p-header[data-status="fixed"] {
   translate: 0 -100%; //隠しておく
-  transition: translate var(--duration) var(--ease-out-quart);
+  visibility: hidden; //隠しておく状態のときは完全に存在を削除するため
+  transition:
+    translate var(--duration) var(--ease-out-quart),
+    visibility var(--duration) var(--ease-out-quart);
+  background: var(--color-bg);
 }
 
 .p-header[data-status="fixed"] .p-header__inner {
@@ -179,9 +183,10 @@
     column-gap: var(--_inner-col-gap);
   }
 }
-
+/* スクロールしたら実行(追従型ヘッダーが表示される) */
 .p-header[data-status="fixed"][data-scroll="active"] {
   translate: 0;
+  visibility: visible;
 }
 
 .p-header[data-status="fixed"] .p-header__logo {
@@ -220,7 +225,6 @@
   top: 0;
   right: 0;
   z-index: var(--z-index-header-drawer);
-
   width: calc(240 * var(--to-rem));
   height: calc(344 * var(--to-rem));
   padding-block: calc(80 * var(--to-rem));
@@ -270,7 +274,7 @@
   color: var(--color-text-white);
   font-family: var(--roboto-font-family);
   text-transform: uppercase;
-  
+
   &:focus-visible {
     opacity: 0.8;
   }
