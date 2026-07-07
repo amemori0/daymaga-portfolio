@@ -1,61 +1,55 @@
 <?php
-
 /**
- * ページネーションパーツ（c-pagination コンポーネント）
+ * ページネーション
  *
- * paginate_links() の結果を c-pagination__item + data-state で出力する。
- * 状態は data-state 属性で管理し、ARIA 属性でアクセシビリティを補足する。
- *
- * 呼び出す時は親要素でwrapする。
+ * @param WP_Query|null $args["query"]  独自のWP_Queryを使う場合に渡す（例: tab-list.phpの$all_query）
+ *                                       未指定の場合はメインクエリ（the_posts_pagination）を使う
  */
+$query = isset($args["query"]) ? $args["query"] : null;
+$pagination_class = isset($args["pagination_class"]) ? " " . $args["pagination_class"] : "";
 
-global $wp_query;
-
-// 配列でリンクを取得（prev_text / next_text は表示文言）
-$pagination = paginate_links([
-  "type" => "array",
-  "prev_text" => "前へ",
-  "next_text" => "次へ",
-]);
-
-if (!$pagination || empty($pagination)) {
-  return;
-}
-
-/**
- * WordPress の class を data-state 属性と ARIA 付きの属性に差し替える。
- */
-$normalize_item = function ($html) {
-  // 元の class 名から状態を判定
-  $state = "page";
-  if (str_contains($html, "current")) {
-    $state = "current";
-  } elseif (str_contains($html, "disabled")) {
-    $state = "disabled";
-  } elseif (str_contains($html, "dots")) {
-    $state = "dots";
-  } elseif (str_contains($html, "prev")) {
-    $state = "prev";
-  } elseif (str_contains($html, "next")) {
-    $state = "next";
-  }
-
-  // 状態に応じた ARIA 属性（スクリーンリーダー等用）
-  $aria_by_state = [
-    "current" => " aria-current=\"page\"",
-    "disabled" => " aria-disabled=\"true\"",
-    "dots" => " aria-hidden=\"true\"",
-  ];
-
-  $attr = " class=\"c-pagination__item\" data-state=\"" . esc_attr($state) . "\"";
-  $attr .= $aria_by_state[$state] ?? "";
-
-  // 最初の class 属性を正規化した属性に置換
-  return preg_replace('/\s*class=["\'][^"\']*["\']/', $attr, $html, 1);
-};
+$pagination_args = [
+  "mid_size" => 1,
+  "prev_text" => '<img src="' . esc_url(get_theme_file_uri("/assets/images/arrow_left_pagination.svg")) . '" alt="" class="c-pagination__arrow">',
+  "next_text" => '<img src="' . esc_url(get_theme_file_uri("/assets/images/arrow_right_pagination.svg")) . '" alt="" class="c-pagination__arrow">',
+];
 ?>
-<nav class="c-pagination" aria-label="ページネーション">
-  <?php foreach ($pagination as $page): ?>
-    <?php echo wp_kses_post($normalize_item($page)); ?>
-  <?php endforeach; ?>
-</nav>
+
+<?php if ($query instanceof WP_Query): ?>
+
+  <?php
+  // 独自のWP_Queryを使う場合
+  $paged = get_query_var("paged") ? get_query_var("paged") : (get_query_var("page") ? get_query_var("page") : 1);
+
+  $pagination_links = paginate_links(
+    array_merge($pagination_args, [
+      "total" => $query->max_num_pages,
+      "current" => $paged,
+    ]),
+  );
+
+  if ($pagination_links): ?>
+    <nav class="c-pagination <?php echo esc_attr($pagination_class); ?>" aria-label="ページネーション">
+      <?php echo $pagination_links; ?>
+    </nav>
+  <?php endif;
+  ?>
+
+<?php
+  // メインクエリを使う場合
+
+  else: ?>
+
+  <?php
+  ob_start();
+  the_posts_pagination($pagination_args);
+  $pagination_output = ob_get_clean();
+
+  if ($pagination_output): ?>
+    <nav class="c-pagination <?php echo esc_attr($pagination_class); ?>" aria-label="ページネーション">
+      <?php echo $pagination_output; ?>
+    </nav>
+  <?php endif;
+  ?>
+
+<?php endif; ?>

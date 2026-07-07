@@ -31,6 +31,8 @@ get_header(); ?>
         "contents_class" => "p-all__contents",
         "card_list_class" => "p-all__card-list",
         "card_item_class" => "p-all__card-item",
+        "show_pagination" => true, //paginationを表示
+        "pagination_class"  => "p-all__pagination", 
       ]); ?>
     </div>
 

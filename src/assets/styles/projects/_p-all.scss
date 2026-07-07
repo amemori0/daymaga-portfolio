@@ -74,3 +74,16 @@
     padding-block: calc(64 * var(--to-rem)) calc(48 * var(--to-rem));
   }
 }
+
+// ----------------------------------------
+// ページネーション
+// ----------------------------------------
+
+.p-all__pagination {
+  justify-content: center;
+  margin-block-start: calc(58 * var(--to-rem));
+
+  @include mq(md) {
+    margin-block-start: calc(32 * var(--to-rem));
+  }
+}

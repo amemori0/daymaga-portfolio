@@ -1,9 +1,10 @@
 <?php
-$list_class = isset($args["list_class"]) ? " " . $args["list_class"] : "";
-$contents_class = isset($args["contents_class"]) ? " " . $args["contents_class"] : "";
+$list_class      = isset($args["list_class"]) ? " " . $args["list_class"] : "";
+$contents_class  = isset($args["contents_class"]) ? " " . $args["contents_class"] : "";
 $card_list_class = isset($args["card_list_class"]) ? " " . $args["card_list_class"] : "";
 $card_item_class = isset($args["card_item_class"]) ? " " . $args["card_item_class"] : "";
 $card_tags_class = isset($args["card_tags_class"]) ? " " . $args["card_tags_class"] : "";
+$show_pagination = isset($args["show_pagination"]) ? $args["show_pagination"] : true;
 
 $categories = get_categories([
   "hide_empty" => true,
@@ -39,6 +40,13 @@ $order_args =
       "orderby" => "date",
       "order" => "DESC",
     ];
+
+// ページネーションを表示しない場合は常に1ページ目のみ表示する
+if ($show_pagination) {
+  $paged = get_query_var("paged") ? get_query_var("paged") : (get_query_var("page") ? get_query_var("page") : 1);
+} else {
+  $paged = 1;
+}
 ?>
 
 <div class="c-tab__wrap<?php echo esc_attr($list_class); ?>">
@@ -59,16 +67,16 @@ $order_args =
   <!-- 新着順・人気順 -->
   <div class="c-tab__sort">
     
-     <a class="c-tab__sort-button"
+    <a class="c-tab__sort-button"
       href="<?php echo esc_url(add_query_arg("orderby", "new")); ?>"
       aria-current="<?php echo $current_sort === "new" ? "true" : "false"; ?>"
-       <?php echo $current_sort === "new" ? 'tabindex="-1"' : ""; ?>
+      <?php echo $current_sort === "new" ? 'tabindex="-1"' : ""; ?>
     >新着順</a>
     
      <a class="c-tab__sort-button"
       href="<?php echo esc_url(add_query_arg("orderby", "popular")); ?>"
       aria-current="<?php echo $current_sort === "popular" ? "true" : "false"; ?>"
-       <?php echo $current_sort === "popular" ? 'tabindex="-1"' : ""; ?>
+      <?php echo $current_sort === "popular" ? 'tabindex="-1"' : ""; ?>
     >人気順</a>
   </div>
 </div>
@@ -77,55 +85,54 @@ $order_args =
 
   <!-- パネル：すべて -->
   <div class="c-tab__panel" id="panel-all" role="tabpanel" aria-labelledby="tab-all" data-status="active">
-    <?php $all_query = new WP_Query(
-      array_merge(
-        [
-          "post_type" => "post",
-          "posts_per_page" => 9,
-        ],
-        $order_args,
-      ),
-    ); ?>
+    <?php
+    $all_query = new WP_Query(array_merge([
+      "post_type"      => "post",
+      "posts_per_page" => 9,
+      "paged"          => $paged,
+    ], $order_args));
+    ?>
     <ul class="c-card-list<?php echo esc_attr($card_list_class); ?>" data-category="all">
       <?php if ($all_query->have_posts()): ?>
-        <?php while ($all_query->have_posts()):
-          $all_query->the_post(); ?>
+        <?php while ($all_query->have_posts()): $all_query->the_post(); ?>
           <?php get_template_part("template-parts/card", null, [
             "card_item_class" => ltrim($card_item_class),
             "card_tags_class" => ltrim($card_tags_class),
           ]); ?>
-        <?php
-        endwhile; ?>
+        <?php endwhile; ?>
       <?php else: ?>
         <li class="c-card-list__empty">投稿が見つかりませんでした。</li>
       <?php endif; ?>
     </ul>
+
+    <?php if ($show_pagination): ?>
+      <?php get_template_part("template-parts/pagination", null, [
+        "query" => $all_query,
+        "pagination_class"  => isset($args["pagination_class"]) ? $args["pagination_class"] : "",
+      ]); ?>
+    <?php endif; ?>
+
     <?php wp_reset_postdata(); ?>
   </div>
 
   <!-- カテゴリーごとのパネル (すべて以外)-->
   <?php foreach ($categories as $category): ?>
     <div class="c-tab__panel" id="panel-<?php echo esc_attr($category->slug); ?>" role="tabpanel" aria-labelledby="tab-<?php echo esc_attr($category->slug); ?>">
-      <?php $cat_query = new WP_Query(
-        array_merge(
-          [
-            "post_type" => "post",
-            "posts_per_page" => 9,
-            "category_name" => $category->slug,
-          ],
-          $order_args,
-        ),
-      ); ?>
+      <?php
+      $cat_query = new WP_Query(array_merge([
+        "post_type"      => "post",
+        "posts_per_page" => 9,
+        "category_name"  => $category->slug,
+      ], $order_args));
+      ?>
       <ul class="c-card-list<?php echo esc_attr($card_list_class); ?>" data-category="<?php echo esc_attr($category->slug); ?>">
         <?php if ($cat_query->have_posts()): ?>
-          <?php while ($cat_query->have_posts()):
-            $cat_query->the_post(); ?>
+          <?php while ($cat_query->have_posts()): $cat_query->the_post(); ?>
             <?php get_template_part("template-parts/card", null, [
               "card_item_class" => ltrim($card_item_class),
               "card_tags_class" => ltrim($card_tags_class),
             ]); ?>
-          <?php
-          endwhile; ?>
+          <?php endwhile; ?>
         <?php else: ?>
           <li class="c-card-list__empty">このカテゴリの投稿は準備中です。</li>
         <?php endif; ?>

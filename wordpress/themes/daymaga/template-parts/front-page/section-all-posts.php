@@ -10,12 +10,13 @@
     </h2>
 
 <?php
-get_template_part( 'template-parts/tab-card', null, [
+get_template_part( 'template-parts/tab-list', null, [
     'list_class'      => 'p-top-all__tab-list',
     'contents_class'  => 'p-top-all__tab-contents',
     'card_list_class' => 'p-top-all__card-list',
     'card_item_class' => 'p-top-all__card-item',
     'card_tags_class' => 'p-top-all__card-tags',
+    "show_pagination" => false, // トップページでは非表示
 ] );
 ?>
     
