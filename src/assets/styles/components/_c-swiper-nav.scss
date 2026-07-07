@@ -38,8 +38,8 @@
 }
 
 .c-swiper-nav[data-status="white"] {
-  color: var(--color-white); // 通常時：白い矢印・白いボーダー
-  background: transparent; // 通常時：透明背景
+  color: var(--color-white); // 通常時：白
+  background: transparent;
   border-radius: 50%;
   transition:
     color var(--duration) var(--ease-out-quad),
@@ -47,13 +47,8 @@
 
   @media (any-hover: hover) {
     &:hover {
-      color: var(--color-secondary); // hover時：青い矢印・青いボーダー
-      background: var(--color-white); // hover時：白背景
+      color: var(--color-secondary);
+      background: var(--color-white);
     }
-  }
-
-  &:focus-visible {
-    color: var(--color-secondary);
-    background: var(--color-white);
   }
 }

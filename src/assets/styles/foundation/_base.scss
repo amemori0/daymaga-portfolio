@@ -17,15 +17,6 @@ html {
   text-underline-offset: 0.25em;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  word-break: auto-phrase;
-}
-
 // Safari対策
 a[href^="tel"] {
   text-decoration: none;

@@ -1,14 +1,68 @@
 @use "../global" as *;
 
+// ==========================================================================
+// c-card-list / c-card
+// カード一覧とカード単体のコンポーネント
+// ==========================================================================
+
+// ----------------------------------------
+// カードリスト（カテゴリごとの色分岐あり）
+//
+// PHP側で <ul> に data-category="{category->slug}" を出力しており、
+// タブ側（c-tab__item）と同じ考え方でカテゴリ色を反映させている。
+// --_card-list-color に色を集約することで、
+// 「どこに色を使うか」の指定（background）は1箇所のまま、
+// カテゴリ分岐は変数の上書き
+// ----------------------------------------
+.c-card-list {
+  --_card-list-color: var(--color-category-all); // デフォルト(all)
+  --_inner-padding: calc(32 * var(--to-rem));
+  --_tab-clearance: 0;
+
+  border-radius: 0 16px 16px 16px;
+  background: var(--_card-list-color);
+
+  &[data-category="new"] {
+    --_card-list-color: var(--color-category-new);
+  }
+  &[data-category="tips"] {
+    --_card-list-color: var(--color-category-tips);
+  }
+  &[data-category="interview"] {
+    --_card-list-color: var(--color-category-interview);
+  }
+  &[data-category="news"] {
+    --_card-list-color: var(--color-category-news);
+  }
+
+  @media (max-width: 900px) {
+    --_inner-padding: calc(12 * var(--to-rem));
+    --_tab-clearance: calc(12 * var(--to-rem));
+    margin-inline-end: var(--_tab-clearance);
+    border-radius: 16px 0 16px 16px;
+  }
+}
+
+// ----------------------------------------
+// カード単体
+// ----------------------------------------
+
 .c-card {
+  --_card-padding: calc(16 * var(--to-rem));
+
+  position: relative;
+
+  padding: var(--_card-padding);
   border-radius: 12px;
   background: var(--color-white);
   box-shadow: 0px 5px 30px 0px oklch(29.1% 0.07 258.6 / 20%);
   transition: opacity var(--duration) var(--ease-out-cubic);
-  overflow: hidden; //タグが多い場合にタグを隠すため
+  overflow: hidden; // タグが多い場合にタグを隠すため
 
-  &:focus-visible {
+  &:has(:focus-visible) {
     opacity: 0.8;
+    outline: 2px solid;
+    outline-offset: 4px;
   }
 
   @media (any-hover: hover) {
@@ -18,11 +72,19 @@
   }
 }
 
+// タイトルリンクの内容をカード全体でhoverさせるため
+// （リンクテキスト自体ではなくカード全体をクリッカブルにする実装パターン）
 .c-card__link {
-  --_card-padding: calc(16 * var(--to-rem));
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
 
-  display: block;
-  padding: var(--_card-padding);
+  &:focus-visible {
+    outline: none;
+  }
 }
 
 .c-card__img {
@@ -39,9 +101,8 @@
 }
 
 .c-card__body {
-  display: grid;
-  grid-template-rows: subgrid;
-  grid-row: span 4;
+  display: flex;
+  flex-direction: column;
   row-gap: calc(8 * var(--to-rem));
   margin-block-start: calc(12 * var(--to-rem));
 }
@@ -57,16 +118,38 @@
   font-weight: var(--fw-medium);
   line-height: calc(140 / 100);
   letter-spacing: 0.02em;
-}
 
-.c-card__title-inner {
+  // 2行を超えるタイトルは省略表示（3点リーダー）
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
 }
 
-.c-card[data-status="large"] .c-card__link {
+.c-card-list__empty {
+  --_empty-height: calc(582 * var(--to-rem));
+
+  padding: calc(16 * var(--to-rem));
+  background: var(--color-white);
+  border-radius: 16px;
+
+  font-size: calc(20 * var(--to-rem));
+  font-weight: var(--fw-medium);
+  line-height: calc(140 / 100);
+  letter-spacing: 0.02em;
+  width: fit-content;
+  margin-inline: auto;
+
+  @media (max-width: 900px) {
+    height: var(--_empty-height);
+  }
+}
+
+// ----------------------------------------
+// 大きいカードバリエーション
+// data-status="large" 
+// ----------------------------------------
+.c-card[data-status="large"] {
   --_card-padding: calc(28 * var(--to-rem));
 
   @include mq(md) {

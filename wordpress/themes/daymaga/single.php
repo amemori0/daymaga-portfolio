@@ -8,6 +8,7 @@ get_header(); ?>
 
 <?php if (have_posts()):
   while (have_posts()):
+    setPostViews(get_the_ID()); // 閲覧数カウント
 
     the_post();
 

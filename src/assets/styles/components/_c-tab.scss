@@ -1,11 +1,50 @@
 @use "../global" as *;
 
-.c-tab {
+// ==========================================================================
+// c-tab
+// カテゴリータブ
+// ==========================================================================
+
+.c-tab__wrap {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 1em;
+
+  @media (max-width: 900px) {
+    justify-content: end;
+  }
+}
+
+// ----------------------------------------
+// タブリスト
+// ----------------------------------------
+
+.c-tab__list {
+  display: flex;
+  align-items: center;
+  column-gap: calc(12 * var(--to-rem));
+
+  @media (max-width: 900px) {
+    position: absolute;
+    top: calc(23 * var(--to-rem));
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: calc(8 * var(--to-rem));
+  }
+}
+
+.c-tab__item {
   --_tab-padding-y: calc(6 * var(--to-rem)) calc(4 * var(--to-rem));
   --_tab-padding-x: calc(20 * var(--to-rem));
+
   padding-block: var(--_tab-padding-y);
   padding-inline: var(--_tab-padding-x);
   border-radius: 12px 12px 0 0;
+
+  // border-colorを個別指定せず、colorを継承させることで
+  // カテゴリごとの色分岐を「color」の上書き
   border: 1px solid currentColor;
   width: fit-content;
   background: var(--color-white);
@@ -13,18 +52,78 @@
   font-size: calc(16 * var(--to-rem));
   font-weight: var(--fw-medium);
   line-height: calc(150 / 100);
-  color: currentColor;
+  color: var(--color-text-white);
   text-transform: uppercase;
 
-  @include mq(md) {
+  @media (max-width: 900px) {
     --_tab-padding-y: calc(10 * var(--to-rem)) calc(6 * var(--to-rem));
     --_tab-padding-x: calc(12 * var(--to-rem));
-    writing-mode: vertical-rl;
+
     font-size: calc(14 * var(--to-rem));
+    writing-mode: vertical-rl;
     text-orientation: upright;
     border-radius: 0 12px 12px 0;
   }
 }
+
+// ----------------------------------------
+// 新着順 人気順
+// ----------------------------------------
+
+.c-tab__sort {
+  --_sort-space: calc(4.5 * var(--to-rem));
+  --_sort-edge-offset: calc(34 * var(--to-rem));
+
+  display: flex;
+  align-items: end;
+  column-gap: calc(12 * var(--to-rem));
+  margin-block-end: var(--_sort-space);
+  padding-inline-end: var(--_sort-edge-offset);
+
+  @media (max-width: 900px) {
+    --_sort-edge-offset: calc(8 * var(--to-rem));
+    justify-content: end;
+  }
+}
+
+.c-tab__sort-button {
+  font-size: calc(18 * var(--to-rem));
+  line-height: calc(130 / 100);
+  color: var(--color-text-sub);
+
+  @media (max-width: 900px) {
+    font-size: calc(14 * var(--to-rem));
+  }
+
+  &:focus-visible{
+    outline: 2px solid var(--color-black);
+  }
+}
+
+.c-tab__sort-button:first-child {
+  --_line-color: #676e87;
+
+  padding-inline-end: calc(12 * var(--to-rem));
+  border-inline-end: 1px solid var(--_line-color);
+}
+
+/* アクティブ時 */
+.c-tab__sort-button[aria-current="true"] {
+  color: var(--color-primary);
+  pointer-events: none;
+}
+
+.c-tab__contents {
+  --_side-tab-width: calc(26 * var(--to-rem));
+  @media (max-width: 900px) {
+    padding-inline-end: var(--_side-tab-width);
+  }
+}
+
+// ----------------------------------------
+// パネル表示切り替え
+// data-status="active" はJS側でタブ選択に応じて切り替える
+// ----------------------------------------
 
 // 非表示状態（デフォルト）
 .c-tab__panel {
@@ -45,19 +144,61 @@
   translate: 0;
 }
 
-// タブごとの色指定
-.c-tab[data-category="new"] {
+// ----------------------------------------
+// カテゴリごとの色分岐（選択されていない時）
+//
+// PHP側で各ボタンに data-category="{category->slug}" を出力している。
+// data-status ではなく data-category にしているのは、
+// パネル側の data-status="active"（表示/非表示の状態管理）と
+// 意味が異なる属性を明確に分離するため
+// ----------------------------------------
+.c-tab__item[data-category="all"] {
+  color: var(--color-category-all);
+}
+.c-tab__item[data-category="new"] {
   color: var(--color-category-new);
 }
-
-.c-tab[data-category="tips"] {
+.c-tab__item[data-category="tips"] {
   color: var(--color-category-tips);
 }
-
-.c-tab[data-category="interview"] {
+.c-tab__item[data-category="interview"] {
   color: var(--color-category-interview);
 }
-
-.c-tab[data-category="news"] {
+.c-tab__item[data-category="news"] {
   color: var(--color-category-news);
+}
+
+// ----------------------------------------
+// 選択中（aria-selected="true"）の見た目
+//
+// 選択中は「背景色をカテゴリ色に、文字色を白に反転」させることで
+// 非選択時（枠線のみ色付き）との対比を出している。
+// aria-selected はJS側でタブクリック時に切り替える（アクセシビリティ属性を流用）
+// ----------------------------------------
+.c-tab__item[aria-selected="true"] {
+  &[data-category="all"] {
+    background: var(--color-category-all);
+    color: var(--color-text-white);
+    border: 1px solid var(--color-category-all);
+  }
+  &[data-category="new"] {
+    background: var(--color-category-new);
+    color: var(--color-text-white);
+    border: 1px solid var(--color-category-new);
+  }
+  &[data-category="tips"] {
+    background: var(--color-category-tips);
+    color: var(--color-text-white);
+    border: 1px solid var(--color-category-tips);
+  }
+  &[data-category="interview"] {
+    background: var(--color-category-interview);
+    color: var(--color-text-white);
+    border: 1px solid var(--color-category-interview);
+  }
+  &[data-category="news"] {
+    background: var(--color-category-news);
+    color: var(--color-text-white);
+    border: 1px solid var(--color-category-news);
+  }
 }

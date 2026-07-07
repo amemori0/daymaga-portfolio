@@ -31,3 +31,6 @@ get_template_part("functions-lib/func-add-posttype-post");
 
 // 構造化データの設定（汎用化済み）
 get_template_part("functions-lib/func-structured-data");
+
+//記事の閲覧数カウント機能
+get_template_part("functions-lib/func-post-views");

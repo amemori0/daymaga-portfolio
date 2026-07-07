@@ -1,41 +1,43 @@
 @use "../global" as *;
 
-.c-card__category {
-  --category-padding-block: calc(4 * var(--to-rem));
-  --category-padding-inline: calc(20 * var(--to-rem));
+.c-category {
+  --_category-padding-block: calc(4 * var(--to-rem));
+  --_category-padding-inline: calc(20 * var(--to-rem));
+  --_category-color: var(--color-text-sub); // カテゴリ未指定時のデフォルト色
 
-  padding-block: var(--category-padding-block);
-  padding-inline: var(--category-padding-inline);
+  padding-block: var(--_category-padding-block);
+  padding-inline: var(--_category-padding-inline);
   border-radius: 6px;
+
+  // border-colorを個別指定せず、colorを継承させることで
+  // カテゴリごとの色分岐を --_category-color の上書き
   border: 1px solid currentColor;
+  color: var(--_category-color);
   width: fit-content;
 
   @include mq(md) {
-    --category-padding-inline: calc(16 * var(--to-rem));
+    --_category-padding-inline: calc(16 * var(--to-rem));
+  }
+
+  // カテゴリーごとの色指定
+  &[data-category="new"] {
+    --_category-color: var(--color-category-new);
+  }
+  &[data-category="tips"] {
+    --_category-color: var(--color-category-tips);
+  }
+  &[data-category="interview"] {
+    --_category-color: var(--color-category-interview);
+  }
+  &[data-category="news"] {
+    --_category-color: var(--color-category-news);
   }
 }
 
-.c-category-label {
+.c-category__label {
   font-size: calc(18 * var(--to-rem));
 
   @include mq(md) {
     font-size: calc(13 * var(--to-rem));
   }
-}
-
-// カテゴリーごとの色指定
-.c-card__category[data-category="new"] {
-  color: var(--color-category-new);
-}
-
-.c-card__category[data-category="tips"] {
-  color: var(--color-category-tips);
-}
-
-.c-card__category[data-category="interview"] {
-  color: var(--color-category-interview);
-}
-
-.c-card__category[data-category="news"] {
-  color: var(--color-category-news);
 }
