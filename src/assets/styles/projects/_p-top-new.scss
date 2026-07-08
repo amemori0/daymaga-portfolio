@@ -11,7 +11,7 @@
 }
 
 .p-top-new__title {
-  @include mq(md) {
+  @media (max-width: 900px) {
     width: fit-content;
     margin-inline-end: auto;
   }
@@ -25,17 +25,11 @@
   column-gap: calc(40 * var(--to-rem));
   margin-block-start: calc(48 * var(--to-rem) + var(--leading-trim));
 
-  @include mq(md) {
+  @media (max-width: 900px) {
     --_columns: 1;
     row-gap: calc(20 * var(--to-rem));
     margin-block-start: calc(32 * var(--to-rem) + var(--leading-trim));
   }
-}
-
-.p-top-new__card-tags {
-  display: flex;
-  align-items: center;
-  column-gap: calc(8 * var(--to-rem));
 }
 
 .p-top-new__button-wrap {
