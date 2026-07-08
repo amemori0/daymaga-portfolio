@@ -19,6 +19,7 @@
   --_inner-padding: calc(32 * var(--to-rem));
   --_tab-clearance: 0;
 
+  padding: var(--_inner-padding);
   border-radius: 0 16px 16px 16px;
   background: var(--_card-list-color);
 

@@ -27,8 +27,8 @@ get_header(); ?>
       </h2>
 
       <?php get_template_part("template-parts/tab-list", null, [
-        "list_class" => "p-all__tabs",
-        "contents_class" => "p-all__contents",
+        "list_class" => "p-all__tab-list",
+        "contents_class" => "p-all__tab-contents",
         "card_list_class" => "p-all__card-list",
         "card_item_class" => "p-all__card-item",
         "show_pagination" => true, //paginationを表示

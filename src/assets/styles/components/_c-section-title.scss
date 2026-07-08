@@ -9,9 +9,15 @@
     calc(var(--_clamp-max) * var(--to-rem))
   );
 
-  display: flex;
-  align-items: center;
+  //align-items centerでは見出しが改行した際に
+  //見出しの中央にアイコンが配置されて不格好になるため
+  //見出しが改行したらアイコンが一行目なるようにする
+  display: block grid;
+  grid-template-columns: auto auto; //アイコン 見出し
   column-gap: calc(12 * var(--to-rem));
+  // font-size / line-height を親にし、svgとspan両方に継承させる
+  font-size: var(--_clamp);
+  line-height: calc(120 / 100);
 
   &[data-align="center"] {
     justify-content: center;
@@ -29,10 +35,22 @@
   }
 }
 
+.c-section-title svg {
+  --_icon-height: 38px;
+  --_icon-size: 72 / 38;
+
+  width: auto;
+  height: var(--_icon-height);
+  aspect-ratio: var(--_icon-size);
+  margin-block: calc((1lh - var(--_icon-height)) / 2);
+
+  @include mq(md) {
+    --_icon-height: 22px;
+  }
+}
+
 .c-section-title span {
-  font-size: var(--_clamp);
   font-weight: var(--fw-bold);
-  line-height: calc(120 / 100);
   font-family: var(--title-font-family);
   color: var(--color-primary);
 }

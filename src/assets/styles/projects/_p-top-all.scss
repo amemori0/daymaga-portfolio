@@ -1,6 +1,6 @@
 @use "../global" as *;
 
-.p-top-all-posts {
+.p-top-all {
   --_clamp-min: 48;
   --_clamp-max: 64;
   --_clamp: clamp(
@@ -11,39 +11,28 @@
   padding-block-start: var(--_clamp);
 }
 
-.p-top-all-posts__tabs {
+.p-top-all__tab-list {
   margin-block-start: calc(48 * var(--to-rem) + var(--leading-trim));
 
-  @include mq(md) {
-    margin-block-start: 0;
-  }
-}
-
-.p-top-all-posts__sort-button {
   @include mq(md) {
     margin-block-start: calc(20 * var(--to-rem));
   }
 }
 
-.p-top-all-posts__contents {
-  width: min(calc(1034 * var(--to-rem)), 100%);
+.p-top-all__tab-contents {
+  --_tab-content: calc(1034 * var(--to-rem));
+  
+  width: min(var(--_tab-content), 100%);
   height: auto;
-
-  @include mq(md) {
-    padding-inline-end: calc(27 * var(--to-rem));
-  }
 }
 
-.p-top-all-posts__card-list {
+.p-top-all__card-list {
   --_columns: 3;
   --_gap: calc(32 * var(--to-rem));
-  --_inner-padding: calc(32 * var(--to-rem));
-  --_tab-clearance: 0;
 
   display: grid;
   grid-template-columns: repeat(var(--_columns), minmax(0, 1fr));
   gap: var(--_gap);
-  padding: var(--_inner-padding);
 
   @media (max-width: 949px) {
     --_columns: 2;
@@ -53,16 +42,9 @@
     --_columns: 1;
     --_gap: calc(12 * var(--to-rem));
   }
-
-  @include mq(md) {
-    --_inner-padding: calc(12 * var(--to-rem));
-    --_tab-clearance: calc(12 * var(--to-rem));
-    margin-inline-end: var(--_tab-clearance);
-    border-radius: 16px 0 16px 16px;
-  }
 }
 
-.p-top-all-posts__card-item {
+.p-top-all__card-item {
   &:nth-child(n + 10) {
     display: none;
   }
@@ -76,13 +58,7 @@
   }
 }
 
-.p-top-all-posts__card-tags {
-  display: flex;
-  align-items: center;
-  column-gap: calc(8 * var(--to-rem));
-}
-
-.p-top-all-posts__button-wrap {
+.p-top-all__button-wrap {
   margin-block-start: calc(30 * var(--to-rem));
   text-align: right;
 

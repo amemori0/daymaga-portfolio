@@ -5,12 +5,14 @@
 // ========================================
 
 .c-swiper-nav {
+  --_size: 104px;
   // Swiperのデフォルトスタイルをリセット
   position: static;
   width: auto;
   height: auto;
   margin-top: 0;
   color: inherit;
+  touch-action: manipulation;
   &::after {
     display: none; // Swiperデフォルトの矢印を非表示
   }
@@ -22,8 +24,9 @@
 }
 
 .c-swiper-nav[data-status="dark"] {
-  width: calc(104 * var(--to-rem));
-  height: calc(104 * var(--to-rem));
+  width: var(--_size);
+  aspect-ratio: 1;
+  border-radius: 50%;
   transition: opacity var(--duration) var(--ease-out-quad);
 
   &:focus-visible {
@@ -38,17 +41,24 @@
 }
 
 .c-swiper-nav[data-status="white"] {
-  color: var(--color-white); // 通常時：白
-  background: transparent;
+  --_size: 48px;
+  aspect-ratio: 1;
   border-radius: 50%;
-  transition:
-    color var(--duration) var(--ease-out-quad),
-    background var(--duration) var(--ease-out-quad);
+  transition: background var(--duration) var(--ease-out-quad);
+
+  &:focus-visible {
+    background: var(--color-white);
+    path {
+      stroke: var(--color-secondary);
+    }
+  }
 
   @media (any-hover: hover) {
     &:hover {
-      color: var(--color-secondary);
       background: var(--color-white);
+      path {
+        stroke: var(--color-secondary);
+      }
     }
   }
 }

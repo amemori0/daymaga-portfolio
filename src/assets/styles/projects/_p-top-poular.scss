@@ -43,6 +43,11 @@
   justify-content: space-between;
   align-items: center;
 
+  //テキスト選択の防止
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  
   @include mq(md) {
     flex-direction: column;
     row-gap: calc(24 * var(--to-rem));
@@ -52,15 +57,6 @@
 // ----------------------------------------
 // ナビゲーション
 // ----------------------------------------
-
-/* 初期リセット */
-.p-top-popular__swiper-prev,
-.p-top-popular__swiper-next {
-  position: static;
-  width: auto;
-  height: auto;
-  margin-top: 0;
-}
 
 .p-top-popular__swiper-button-wrap {
   display: flex;
@@ -82,7 +78,9 @@
 }
 
 .p-top-popular__swiper-container {
-  clip-path: inset(0% -50vw 0% 0%); //右側のinnerを無視
+  --_focus-outline-space: calc(5 * var(--to-rem)); // タブ操作時のfocus-visibleアウトラインが上下で見切れないための余白
+  clip-path: inset(0% -50vw 0% 0%);
+  padding-block: var(--_focus-outline-space);
 }
 
 .p-top-popular__swiper {
@@ -101,12 +99,7 @@
   --_card-size: calc(302 * var(--to-rem));
 
   width: var(--_card-size);
-}
-
-.p-top-popular__card-tags {
-  display: flex;
-  align-items: center;
-  column-gap: calc(8 * var(--to-rem));
+  height: auto;
 }
 
 // ----------------------------------------

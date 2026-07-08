@@ -11,7 +11,7 @@
   padding-block-start: var(--_clamp);
 }
 
-.p-all__tabs {
+.p-all__tab-list {
   margin-block-start: calc(48 * var(--to-rem) + var(--leading-trim));
 
   @include mq(md) {
@@ -19,26 +19,20 @@
   }
 }
 
-.p-all__sort-button {
-  @include mq(md) {
-    margin-block-start: calc(20 * var(--to-rem));
-  }
-}
+.p-all__tab-contents {
+  --_tab-content: calc(1034 * var(--to-rem));
 
-.p-all__contents {
-  width: min(calc(1034 * var(--to-rem)), 100%);
+  width: min(var(--_tab-content), 100%);
   height: auto;
 }
 
 .p-all__card-list {
   --_columns: 3;
   --_gap: calc(32 * var(--to-rem));
-  --_inner-padding: calc(32 * var(--to-rem));
 
   display: grid;
   grid-template-columns: repeat(var(--_columns), minmax(0, 1fr));
   gap: var(--_gap);
-  padding: var(--_inner-padding);
 
   @media (max-width: 949px) {
     --_columns: 2;

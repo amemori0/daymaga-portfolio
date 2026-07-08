@@ -1,4 +1,4 @@
-<section class="p-top-all-posts">
+<section class="p-top-all">
   <div class="l-inner">
 
     <h2 class="c-section-title" data-align="left">
@@ -15,13 +15,12 @@ get_template_part( 'template-parts/tab-list', null, [
     'contents_class'  => 'p-top-all__tab-contents',
     'card_list_class' => 'p-top-all__card-list',
     'card_item_class' => 'p-top-all__card-item',
-    'card_tags_class' => 'p-top-all__card-tags',
     "show_pagination" => false, // トップページでは非表示
 ] );
 ?>
     
-    <div class="p-top-all-posts__button-wrap">
-        <a href="<?php echo esc_url( home_url( '/all-posts/' ) ); ?>" class="c-button-more">
+    <div class="p-top-all__button-wrap">
+        <a href="<?php echo esc_url( home_url( '/all/' ) ); ?>" class="c-button-more">
             <span class="c-button-more__text">もっと見る</span>
             <span class="u-sr-only">すべての記事一覧へ</span>
         </a>
