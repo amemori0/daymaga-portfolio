@@ -57,7 +57,7 @@ $is_first = isset($args["is_first"]) ? $args["is_first"] : false;
         <?php endif; ?>
       </div>
 
-      <?php $post_tags = get_the_tags(); ?>
+    <?php $post_tags = get_the_tags(); ?>
       <?php if ($post_tags && !is_wp_error($post_tags)): ?>
         <ul class="c-tags<?php echo esc_attr($card_tags_class); ?>" aria-label="記事のタグ">
           <?php foreach ($post_tags as $tag): ?>
