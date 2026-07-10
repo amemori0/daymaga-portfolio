@@ -6,7 +6,6 @@ import "./_swiper-mv.js";
 import "./_swiper-popular.js";
 import "./_tab.js";
 import "./_smooth.js";
-import "./_tag-filter.js";
 
 
 // 開発環境でのみCSSをインポート（JS経由でスタイルを注入）

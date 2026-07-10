@@ -129,6 +129,7 @@
 .c-tab__panel {
   opacity: 0;
   visibility: hidden;
+  overflow: hidden;
   height: 0;
   translate: 0 -20px;
   transition:

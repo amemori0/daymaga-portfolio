@@ -1,0 +1,66 @@
+@use "../global" as *;
+
+.p-category__card-list {
+  --_columns: 3;
+  --_gap: calc(32 * var(--to-rem));
+
+  display: grid;
+  grid-template-columns: repeat(var(--_columns), minmax(0, 1fr));
+  gap: var(--_gap);
+  border-radius: 16px;
+  margin-block-start: calc(40 * var(--to-rem));
+
+  @media (max-width: 949px) {
+    --_columns: 2;
+  }
+
+  @media (max-width: 749px) {
+    --_columns: 1;
+    --_gap: calc(12 * var(--to-rem));
+    margin-block-start: calc(20 * var(--to-rem));
+  }
+}
+
+.p-category__card-item {
+  &:nth-child(n + 10) {
+    display: none;
+  }
+
+  // 950px未満：最大6枚 ＝ 7枚目以降（7, 8, 9...）を非表示
+  //（750px未満も最大6枚で共通なため、ここで一括コントロール）
+  @media (max-width: 949px) {
+    &:nth-child(n + 7) {
+      display: none;
+    }
+  }
+}
+
+.p-category__tag-filter-inner {
+  --_pt-min: 48;
+  --_pt-max: 64;
+  --_pt: clamp(calc(var(--_pt-min) * var(--to-rem)), calc((var(--_pt-min) - (var(--_pt-max) - var(--_pt-min)) / (1440 - 390) * 390) * var(--to-rem) + (var(--_pt-max) - var(--_pt-min)) / (1440 - 390) * 100vi), calc(var(--_pt-max) * var(--to-rem)));
+
+  --_pb-min: 48;
+  --_pb-max: 64;
+  --_pb: clamp(calc(var(--_pb-min) * var(--to-rem)), calc((var(--_pb-min) - (var(--_pb-max) - var(--_pb-min)) / (1440 - 390) * 390) * var(--to-rem) + (var(--_pb-max) - var(--_pb-min)) / (1440 - 390) * 100vi), calc(var(--_pb-max) * var(--to-rem)));
+
+  width: min(calc(816 * var(--to-rem) + 26 * var(--to-rem) * 2), 100%);
+  padding-inline: calc(26 * var(--to-rem));
+  margin-inline: auto;
+  padding-block: var(--_pt) var(--_pb);
+}
+
+.p-category__pagination {
+  --_pt-min: 34;
+  --_pt-max: 56;
+  --_pt: clamp(calc(var(--_pt-min) * var(--to-rem)), calc((var(--_pt-min) - (var(--_pt-max) - var(--_pt-min)) / (1440 - 390) * 390) * var(--to-rem) + (var(--_pt-max) - var(--_pt-min)) / (1440 - 390) * 100vi), calc(var(--_pt-max) * var(--to-rem)));
+
+  --_pb: calc(34 * var(--to-rem));
+
+  padding-block: var(--_pt) var(--_pb);
+  justify-content: center;
+
+  @include mq(md) {
+    --_pb: 0;
+  }
+}

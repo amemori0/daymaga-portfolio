@@ -48,6 +48,7 @@ $post_type_class = $post_type === "post" ? "" : "p-archive--" . $post_type;
       </header>
 
       <?php get_template_part("template-parts/archive/archive-list"); ?>
+      <?php get_template_part("template-parts/pagination"); ?>
     </div>
   </section>
 </main>
