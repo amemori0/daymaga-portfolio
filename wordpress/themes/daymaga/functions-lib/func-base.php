@@ -157,3 +157,19 @@ function wpcf7_autop_return_false()
 {
   return false;
 }
+
+function daymaga_add_heading_ids($content) {
+  return preg_replace_callback('/<h([34])(.*?)>(.*?)<\/h\1>/i', function ($matches) {
+    $level = $matches[1];
+    $attrs = $matches[2];
+    $text = $matches[3];
+
+    if (strpos($attrs, 'id=') !== false) {
+      return $matches[0];
+    }
+
+    $id = sanitize_title(wp_strip_all_tags($text));
+    return "<h{$level}{$attrs} id=\"{$id}\">{$text}</h{$level}>";
+  }, $content);
+}
+add_filter("the_content", "daymaga_add_heading_ids", 5);

@@ -1,0 +1,92 @@
+@use "../global" as *;
+
+.p-popular__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  //テキスト選択の防止
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+
+  @include mq(md) {
+    flex-direction: column;
+    row-gap: calc(24 * var(--to-rem));
+  }
+}
+
+// ----------------------------------------
+// ナビゲーション
+// ----------------------------------------
+
+.p-popular__swiper-button-wrap {
+  display: flex;
+  align-items: center;
+  column-gap: calc(16 * var(--to-rem));
+  flex-shrink: 0;
+
+  @include mq(md) {
+    width: fit-content;
+    margin-inline-start: auto;
+  }
+}
+
+.p-popular__title {
+  @include mq(md) {
+    width: fit-content;
+    margin-inline-end: auto;
+  }
+}
+
+.p-popular__swiper-container {
+  --_focus-outline-space: calc(5 * var(--to-rem)); // タブ操作時のfocus-visibleアウトラインが上下で見切れないための余白
+  clip-path: inset(0% -50vw 0% 0%);
+  padding-block: var(--_focus-outline-space);
+}
+
+.p-popular__swiper {
+  overflow: visible; //overflow-hiddenの解除。右側innerに隠れているカードを表示させるようにするため
+}
+
+.p-popular__swiper-wrapper {
+  margin-block-start: calc(36 * var(--to-rem));
+
+  @include mq(md) {
+    margin-block-start: calc(24 * var(--to-rem));
+  }
+}
+
+.p-popular__swiper-slide {
+  --_card-size: calc(302 * var(--to-rem));
+
+  width: var(--_card-size);
+  height: auto;
+}
+
+// ----------------------------------------
+// ページネーション (progressbar)
+// ----------------------------------------
+
+.p-popular__swiper-pagination.swiper-pagination-horizontal {
+  --_pad-left: calc(188 * var(--to-rem));
+  --_pad-right: calc(213 * var(--to-rem));
+  // 100% から左右の余白分× 2を引く
+  --_progressbar-width: calc(100% - var(--_pad-left) - var(--_pad-right));
+  --_progressbar-height: 8px;
+
+  position: absolute;
+  top: calc(100% - 36px);
+  left: var(--_pad-left);
+  translate: 0;
+
+  width: var(--_progressbar-width);
+  height: var(--_progressbar-height);
+  border-radius: 4px;
+
+  @include mq(md) {
+    --_pad-left: calc(32 * var(--to-rem));
+    --_pad-right: calc(38 * var(--to-rem));
+    bottom: calc(40 * var(--to-rem));
+  }
+}

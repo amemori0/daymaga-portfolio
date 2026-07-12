@@ -58,3 +58,7 @@
 .c-section-title[data-status="white"] span {
   color: var(--color-text-white);
 }
+
+.c-section-title[data-status="dark"] span {
+  color: var(--color-primary);
+}

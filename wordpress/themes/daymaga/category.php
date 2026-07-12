@@ -42,7 +42,7 @@ $current_category = get_queried_object();
 
     </div>
 
-    <div class="p-category__tag-filter-inner">
+    <div id="tag-filter" class="p-category__tag-filter-inner">
       <?php get_template_part("template-parts/tag-filter"); ?>
     </div>
 

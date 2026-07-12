@@ -37,11 +37,11 @@ $mv_query = new WP_Query([
     </div>
 
     <div class="p-mv__swiper-button-wrap">
-      <div class="c-swiper-nav p-mv__swiper-prev swiper-button-prev" data-status="dark" role="button" aria-label="前のスライドへ">
-        <?php include get_theme_file_path("/assets/images/arrow_left_dark.svg"); ?>
+      <div class="c-swiper-nav p-mv__swiper-prev swiper-button-prev" data-status="sm-dark" role="button" aria-label="前のスライドへ">
+        <?php include get_theme_file_path("/assets/images/arrow_left_dark1.svg"); ?>
       </div>
       <div class="c-swiper-nav p-mv__swiper-next swiper-button-next" data-status="dark" role="button" aria-label="次のスライドへ">
-        <?php include get_theme_file_path("/assets/images/arrow_right_dark.svg"); ?>
+        <?php include get_theme_file_path("/assets/images/arrow_right_dark1.svg"); ?>
       </div>
     </div>
   </div>

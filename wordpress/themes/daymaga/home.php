@@ -36,7 +36,7 @@ get_header(); ?>
       ]); ?>
     </div>
 
-    <div class="p-all__tag-filter-inner">
+    <div id="tag-filter" class="p-all__tag-filter-inner">
       <?php get_template_part("template-parts/tag-filter"); ?>
     </div>
 

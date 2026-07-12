@@ -1,0 +1,59 @@
+@use "../global" as *;
+
+.c-faq {
+  --_question-label: #676e87;
+  --_answer-label: #629de2;
+
+  display: flex;
+  flex-direction: column;
+  row-gap: calc(20 * var(--to-rem));
+}
+
+.c-faq__item {
+  display: flex;
+  flex-direction: column;
+  row-gap: calc(20 * var(--to-rem));
+}
+
+.c-faq__question,
+.c-faq__answer {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: start;
+}
+
+//(左)質問、回答ラベル
+.c-faq__question-label,
+.c-faq__answer-label {
+  font-size: calc(15 * var(--to-rem));
+  line-height: calc(200 / 100);
+  letter-spacing: 0.2em;
+  color: var(--color-text-white);
+}
+
+.c-faq__question-label {
+  padding: calc(4 * var(--to-rem)) calc(12 * var(--to-rem));
+  background: var(--_question-label);
+}
+
+.c-faq__answer-label {
+  padding: calc(4 * var(--to-rem)) calc(12 * var(--to-rem));
+  background: var(--_answer-label);
+}
+
+//(右)テキスト
+.c-faq__question-text,
+.c-faq__answer-text {
+  padding: calc(4 * var(--to-rem)) calc(12 * var(--to-rem));
+  font-size: calc(15 * var(--to-rem));
+  line-height: calc(200 / 100);
+  letter-spacing: 0.2em;
+}
+
+.c-faq__question-text {
+  border: 1px solid var(--_question-label);
+}
+
+.c-faq__answer-text {
+  border: 1px solid var(--_answer-label);
+}
