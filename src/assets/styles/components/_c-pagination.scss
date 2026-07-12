@@ -1,6 +1,6 @@
 @use "../global" as *;
 
-.c-pagination {
+.c-pagination .nav-links {
   display: flex;
   align-items: center;
   column-gap: calc(8 * var(--to-rem));

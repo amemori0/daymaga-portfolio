@@ -1,343 +1,123 @@
 @use "../global" as *;
 
-.p-archive {
-  padding-block: calc(40 * var(--to-rem));
+.p-tag__inner {
+  width: min(calc(1010 * var(--to-rem) + 21 * var(--to-rem) * 2), 100%);
+  padding-inline: calc(21 * var(--to-rem));
+  margin-inline: auto;
+}
+
+.p-tag__header {
+  padding-block: calc(12 * var(--to-rem)) calc(8 * var(--to-rem));
+  padding-inline: calc(24 * var(--to-rem));
+  border-radius: 16px 16px 0 0;
+  background: var(--color-secondary);
+  width: fit-content;
 
   @include mq(md) {
-    padding-block: calc(80 * var(--to-rem));
+    padding-block: calc(10 * var(--to-rem)) calc(6 * var(--to-rem));
+    padding-inline: calc(16 * var(--to-rem));
   }
 }
 
-.p-archive__inner {
-  max-width: calc(var(--inner) + var(--padding-inner) * 2);
-}
-
-.p-archive__header {
-  margin-block-end: calc(40 * var(--to-rem));
-  text-align: center;
-
-  @include mq(md) {
-    margin-block-end: calc(60 * var(--to-rem));
-  }
-}
-
-.p-archive__title {
-  margin-block-end: calc(16 * var(--to-rem));
-
-  @include mq(md) {
-    margin-block-end: calc(24 * var(--to-rem));
-  }
-}
-
-.p-archive__description {
-  margin-block-start: calc(16 * var(--to-rem));
-  color: var(--color-text);
-  font-size: calc(14 * var(--to-rem));
-  line-height: 1.8;
-
-  @include mq(md) {
-    margin-block-start: calc(24 * var(--to-rem));
-    font-size: calc(16 * var(--to-rem));
-  }
-}
-
-.p-archive__list {
-  display: grid;
-  gap: calc(24 * var(--to-rem));
-
-  @include mq(md) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: calc(32 * var(--to-rem));
-  }
-
-  @include mq(lg) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.p-archive__link {
+.p-tag__title {
   display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: calc(16 * var(--to-rem));
-  border: 1px solid var(--color-gray);
-  border-radius: 12px;
-  background-color: var(--color-white);
-  text-decoration: none;
-  transition:
-    translate 0.3s ease,
-    box-shadow 0.3s ease;
+  column-gap: calc(8 * var(--to-rem));
+}
+
+.p-tag__title-tag,
+.p-tag__title-text {
+  font-size: calc(28 * var(--to-rem));
+  font-weight: var(--fw-bold);
+  font-family: var(--title-font-family);
+  line-height: calc(150 / 100);
+  letter-spacing: 0.15em;
+  color: var(--color-text-white);
 
   @include mq(md) {
-    padding: calc(20 * var(--to-rem));
+    font-size: calc(15 * var(--to-rem));
+  }
+}
+
+.p-tag__card-list {
+  --_columns: 3;
+  --_gap: calc(32 * var(--to-rem));
+
+  display: grid;
+  grid-template-columns: repeat(var(--_columns), minmax(0, 1fr));
+  gap: var(--_gap);
+  padding: calc(32 * var(--to-rem));
+  border-radius: 0 16px 16px 16px;
+  background: var(--color-white);
+  @media (max-width: 949px) {
+    --_columns: 2;
   }
 
-  @media (any-hover: hover) {
-    &:hover {
-      box-shadow: 0 8px 24px oklch(from var(--color-black) l c h / 10%);
-      translate: 0 calc(-4 * var(--to-rem));
+  @media (max-width: 749px) {
+    --_columns: 1;
+    --_gap: calc(12 * var(--to-rem));
+  }
+}
+
+.p-tag__card-item {
+  &:nth-child(n + 10) {
+    display: none;
+  }
+
+  // 950px未満：最大6枚 ＝ 7枚目以降（7, 8, 9...）を非表示
+  //（750px未満も最大6枚で共通なため、ここで一括コントロール）
+  @media (max-width: 949px) {
+    &:nth-child(n + 7) {
+      display: none;
     }
   }
 }
 
-.p-archive__thumbnail {
-  overflow: hidden;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  margin-block-end: calc(16 * var(--to-rem));
-  border-radius: 8px;
-  background-color: var(--color-gray);
+// ----------------------------------------
+// ページネーション
+// ----------------------------------------
+
+.p-tag__pagination .nav-links {
+  justify-content: center;
+  margin-block-start: calc(64 * var(--to-rem));
 
   @include mq(md) {
-    margin-block-end: calc(20 * var(--to-rem));
+    margin-block-start: calc(56 * var(--to-rem));
   }
 }
+// ----------------------------------------
+// よく読まれている記事
+// ----------------------------------------
 
-.p-archive__thumbnail img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: scale 0.3s ease;
+.p-article__popular {
+  --_clamp-min: 48;
+  --_clamp-max: 64;
+  --_clamp: clamp(
+    calc(var(--_clamp-min) * var(--to-rem)),
+    calc((var(--_clamp-min) - (var(--_clamp-max) - var(--_clamp-min)) / (1440 - 375) * 375) * var(--to-rem) + (var(--_clamp-max) - var(--_clamp-min)) / (1440 - 375) * 100vi),
+    calc(var(--_clamp-max) * var(--to-rem))
+  );
+  position: relative;
+  padding-block: var(--_clamp);
+  overflow: hidden; //ページ全体の横スクロール防止
 }
 
-@media (any-hover: hover) {
-  .p-archive__link:hover .p-archive__thumbnail img {
-    scale: 1.05;
-  }
+.p-article__popular-inner {
+  width: min(calc(1039 * var(--to-rem) + 32 * var(--to-rem) * 2), 100%);
+  padding-inline: calc(32 * var(--to-rem));
+  margin-inline: auto;
 }
 
-.p-archive__content {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: calc(12 * var(--to-rem));
-}
+// ----------------------------------------
+// キーワードで絞り込む
+// ----------------------------------------
 
-.p-archive__item-title {
-  margin: 0;
-  color: var(--color-text);
-  font-size: calc(16 * var(--to-rem));
-  font-weight: var(--fw-bold);
-  line-height: 1.6;
+.p-tag__tag-filter-inner {
+  width: min(calc(816 * var(--to-rem) + 26 * var(--to-rem) * 2), 100%);
+  padding-inline: calc(26 * var(--to-rem));
+  margin-inline: auto;
+  padding-block: calc(48 * var(--to-rem)) calc(64 * var(--to-rem));
 
   @include mq(md) {
-    font-size: calc(20 * var(--to-rem));
-  }
-}
-
-.p-archive__meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(12 * var(--to-rem));
-  align-items: center;
-  color: var(--color-text);
-  font-size: calc(12 * var(--to-rem));
-
-  @include mq(md) {
-    font-size: calc(14 * var(--to-rem));
-  }
-}
-
-.p-archive__date {
-  display: inline-block;
-}
-
-.p-archive__categories {
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(8 * var(--to-rem));
-}
-
-.p-archive__category {
-  display: inline-block;
-  padding: calc(4 * var(--to-rem)) calc(12 * var(--to-rem));
-  border-radius: 4px;
-  background-color: var(--color-gray);
-  color: var(--color-text);
-  font-size: calc(11 * var(--to-rem));
-
-  @include mq(md) {
-    font-size: calc(12 * var(--to-rem));
-  }
-}
-
-.p-archive__excerpt {
-  color: var(--color-text);
-  font-size: calc(14 * var(--to-rem));
-  line-height: 1.8;
-
-  @include mq(md) {
-    font-size: calc(16 * var(--to-rem));
-  }
-}
-
-// アーカイブ内のページネーション（余白。色を変える場合はここで --_pagination-* を上書き）
-.p-archive__pagination {
-  margin-block-start: calc(48 * var(--to-rem));
-
-  @include mq(md) {
-    margin-block-start: calc(60 * var(--to-rem));
-  }
-}
-
-.p-archive__empty {
-  padding-block: calc(60 * var(--to-rem));
-  color: var(--color-text);
-  font-size: calc(16 * var(--to-rem));
-  text-align: center;
-
-  @include mq(md) {
-    padding-block: calc(80 * var(--to-rem));
-    font-size: calc(18 * var(--to-rem));
-  }
-}
-
-.p-single__back {
-  margin-block-start: calc(48 * var(--to-rem));
-  text-align: center;
-
-  @include mq(md) {
-    margin-block-start: calc(60 * var(--to-rem));
-  }
-}
-
-// 制作実績アーカイブページ用スタイル
-.p-archive--works .p-archive__link {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  height: 100%;
-  padding: 0;
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 calc(2 * var(--to-rem)) calc(8 * var(--to-rem)) oklch(from var(--color-black) l c h / 8%);
-  background-color: var(--color-white);
-  text-decoration: none;
-}
-
-.p-archive--works .p-archive__thumbnail {
-  overflow: hidden;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  margin-block-end: 0;
-  border-radius: 12px 12px 0 0;
-}
-
-.p-archive--works .p-archive__thumbnail img {
-  transition: scale 0.5s ease;
-}
-
-@media (any-hover: hover) {
-  .p-archive--works .p-archive__link:has(.p-archive__thumbnail):hover .p-archive__thumbnail img {
-    scale: 1.1;
-  }
-}
-
-.p-archive--works .p-archive__content {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: calc(12 * var(--to-rem));
-  padding: calc(20 * var(--to-rem));
-}
-
-.p-archive--works .p-archive__meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(12 * var(--to-rem));
-  align-items: center;
-  margin-block-end: calc(8 * var(--to-rem));
-  color: var(--color-text);
-  font-size: calc(12 * var(--to-rem));
-
-  @include mq(md) {
-    font-size: calc(14 * var(--to-rem));
-  }
-}
-
-.p-archive--works .p-archive__date {
-  display: inline-block;
-}
-
-.p-archive--works .p-archive__category {
-  display: inline-block;
-  padding: calc(4 * var(--to-rem)) calc(12 * var(--to-rem));
-  border-radius: 4px;
-  background-color: var(--color-gray);
-  color: var(--color-text);
-  font-size: calc(11 * var(--to-rem));
-
-  @include mq(md) {
-    font-size: calc(12 * var(--to-rem));
-  }
-}
-
-.p-archive--works .p-archive__item-title {
-  margin: 0;
-  margin-block-end: calc(8 * var(--to-rem));
-  color: var(--color-text);
-  font-size: calc(16 * var(--to-rem));
-  font-weight: var(--fw-bold);
-  line-height: 1.5;
-
-  @include mq(md) {
-    margin-block-end: calc(12 * var(--to-rem));
-    font-size: calc(18 * var(--to-rem));
-    line-height: 1.6;
-  }
-}
-
-.p-archive--works .p-archive__excerpt {
-  display: -webkit-box;
-  overflow: hidden;
-  margin-block-start: 0;
-  color: var(--color-text);
-  font-size: calc(13 * var(--to-rem));
-  line-height: 1.7;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-
-  @include mq(md) {
-    font-size: calc(14 * var(--to-rem));
-    line-height: 1.8;
-  }
-}
-
-.p-archive--works .p-archive__client,
-.p-archive--works .p-archive__period {
-  display: flex;
-  gap: calc(8 * var(--to-rem));
-  align-items: center;
-  color: var(--color-text);
-  font-size: calc(12 * var(--to-rem));
-
-  @include mq(md) {
-    font-size: calc(14 * var(--to-rem));
-  }
-}
-
-.p-archive--works .p-archive__client-label,
-.p-archive--works .p-archive__period-label {
-  font-weight: var(--fw-medium);
-}
-
-.p-archive--works .p-archive__technologies {
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(8 * var(--to-rem));
-  margin-block-start: calc(12 * var(--to-rem));
-}
-
-.p-archive--works .p-archive__technology {
-  display: inline-block;
-  padding: calc(4 * var(--to-rem)) calc(12 * var(--to-rem));
-  border-radius: 4px;
-  background-color: var(--color-gray);
-  color: var(--color-text);
-  font-size: calc(11 * var(--to-rem));
-
-  @include mq(md) {
-    font-size: calc(12 * var(--to-rem));
+    padding-block: calc(64 * var(--to-rem)) calc(48 * var(--to-rem));
   }
 }
