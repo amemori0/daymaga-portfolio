@@ -36,7 +36,7 @@ $current_category = get_queried_object();
         <?php endif; ?>
       </ul>
 
-      <?php get_template_part("template-parts/pagination", null, [
+       <?php get_template_part("template-parts/pagination", null, [
         "pagination_class" => "p-category__pagination",
       ]); ?>
 

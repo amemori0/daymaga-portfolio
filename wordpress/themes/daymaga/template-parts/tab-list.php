@@ -104,14 +104,6 @@ if ($show_pagination) {
         <li class="c-card-list__empty">投稿が見つかりませんでした。</li>
       <?php endif; ?>
     </ul>
-
-    <?php if ($show_pagination): ?>
-      <?php get_template_part("template-parts/pagination", null, [
-        "query" => $all_query,
-        "pagination_class"  => isset($args["pagination_class"]) ? $args["pagination_class"] : "",
-      ]); ?>
-    <?php endif; ?>
-
     <?php wp_reset_postdata(); ?>
   </div>
 

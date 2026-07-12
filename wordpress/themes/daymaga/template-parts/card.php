@@ -23,7 +23,7 @@ $is_first = isset($args["is_first"]) ? $args["is_first"] : false;
         ?>
       <?php else: ?>
         <img
-          src="<?php echo esc_url(get_theme_file_uri("/assets/images/no-image.webp")); ?>"
+          src="<?php echo esc_url(get_theme_file_uri("/assets/images/image_dummy.webp")); ?>"
           alt=""
           width="270"
           height="157"

@@ -1,9 +1,6 @@
 <?php
 /**
  * ページネーション
- *
- * @param WP_Query|null $args["query"]  独自のWP_Queryを使う場合に渡す（例: tab-list.phpの$all_query）
- *                                       未指定の場合はメインクエリ（the_posts_pagination）を使う
  */
 $query = isset($args["query"]) ? $args["query"] : null;
 $pagination_class = isset($args["pagination_class"]) ? " " . $args["pagination_class"] : "";

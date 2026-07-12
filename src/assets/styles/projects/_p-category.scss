@@ -51,16 +51,10 @@
 }
 
 .p-category__pagination .nav-links {
-  --_pt-min: 34;
-  --_pt-max: 56;
-  --_pt: clamp(calc(var(--_pt-min) * var(--to-rem)), calc((var(--_pt-min) - (var(--_pt-max) - var(--_pt-min)) / (1440 - 390) * 390) * var(--to-rem) + (var(--_pt-max) - var(--_pt-min)) / (1440 - 390) * 100vi), calc(var(--_pt-max) * var(--to-rem)));
-
-  --_pb: calc(34 * var(--to-rem));
-
-  padding-block: var(--_pt) var(--_pb);
   justify-content: center;
+  margin-block-start: calc(48 * var(--to-rem) + var(--leading-trim));
 
   @include mq(md) {
-    --_pb: 0;
+    margin-block-start: calc(20 * var(--to-rem) + var(--leading-trim));
   }
 }

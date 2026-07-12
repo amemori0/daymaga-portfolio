@@ -31,8 +31,10 @@ get_header(); ?>
         "contents_class" => "p-all__tab-contents",
         "card_list_class" => "p-all__card-list",
         "card_item_class" => "p-all__card-item",
-        "show_pagination" => true, //paginationを表示
-        "pagination_class"  => "p-all__pagination", 
+      ]); ?>
+
+        <?php get_template_part("template-parts/pagination", null, [
+        "pagination_class" => "p-all__pagination",
       ]); ?>
     </div>
 
