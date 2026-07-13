@@ -1,528 +1,97 @@
-# WordPress開発環境テンプレート
+# デイマガ｜コンサル案件・ノウハウ発信メディア
 
-Vite + FLOCSS + WordPress を使用したモダンなWordPressテーマ開発環境です。静的サイト開発にも対応していますが、**WordPress開発を主な用途として想定**しています。
+## プロジェクト概要
 
----
+- **サイト名**：デイマガ（DayMaga）
+- **目的・コンセプト**：コンサル案件やノウハウを発信するオウンドメディア型のブログサイト。CMSとして日々記事が追加・編集される前提で、「運用者が壊しにくく、拡張しやすい」テーマ設計を主なテーマに実装した。
 
-## 目次
+## 技術スタック
 
-- [クイックスタート](#クイックスタート)
-- [必要環境](#必要環境)
-- [WordPress開発の流れ](#wordpress開発の流れ)
-- [開発コマンド一覧](#開発コマンド一覧)
-- [本番環境へのデプロイ](#本番環境へのデプロイ)
-- [ガイドライン・ドキュメント](#ガイドラインドキュメント)
-- [よくある問題と解決方法](#よくある問題と解決方法)
-- [ライセンス](#ライセンス)
+- **言語・CMS**：HTML / SCSS / JavaScript / PHP（WordPress オリジナルテーマ）
+- **CSS設計**：FLOCSS + BEM
+- **ライブラリ**：Swiper.js
+- **プラグイン**：Advanced Custom Fields（無料版）、SEO SIMPLE PACK
+- **開発環境**：Vite、`@wordpress/env`（Docker）
 
----
+## 主な実装機能
 
-## クイックスタート
+- トップページ（MVスライダー・新着記事・人気記事・カテゴリタブ切り替え）
+- カテゴリー一覧（`category.php`）／タグ一覧（`tag.php`）／人気記事一覧（`popular.php`）
+- 記事詳細（`single.php`・本文からの目次自動生成）
+- タブ切り替えの `?category=` URLパラメータによる初期表示制御
+- ヘッダー・フッターのナビゲーション配列管理と `aria-current="page"` 付与
+- FAQ（カスタムフィールド＋forループによる動的生成）
 
-### 初回セットアップ（WordPress開発）
+## 工夫した点
 
-1. **依存関係のインストール**
+### 1. `card.php` 共通コンポーネントの引数設計
 
-   ```**bash**
-   yarn
-   ```
+- **実装**：記事カードを `get_template_part()` の共通パーツとして1本化し、呼び出し側から差分を引数で注入する設計にした。
+  - `item_tag`：一覧ページ（`ul > li`）とトップのSwiper（`div`）でラッパータグを切り替え
+  - `card_status`：カードのバリエーション制御
+  - `is_first` / `$slide_index`：最初のカードの画像にのみ `fetchpriority="high"` を付与しLCPを最適化
+  - `item_tag` はホワイトリスト（`li` / `div`）で検証し、不正なタグ名の混入を防止
 
-2. **Docker Desktopの起動**
+### 2. 本文からの目次自動生成
 
-   - [Docker Desktop](https://matsuand.github.io/docs.docker.jp.onthefly/get-docker/)をインストール
-   - Docker Desktopアプリを起動し、ステータスバーに`running`と表示されていることを確認
-   - **重要**: このプロジェクトは`@wordpress/env` 10を使用しており、**Docker Compose V2が必須**です
+- **実装**：2段構えの仕組みで目次を生成。
+  1. `the_content` フィルターで本文中のh3 / h4に `sanitize_title()` ベースのidを自動付与
+  2. 同じ本文から正規表現でid付き見出しを抽出し、h3 / h4の階層付きリストとしてアンカーリンクを出力
+- **理由**：CMSでは執筆者が管理画面で見出しを自由に増減するため、目次の手入力運用は本文とのズレが必ず発生する。
+- **効果**：手入力ゼロで目次と本文が常に一致し、執筆者の運用負担と表示崩れのリスクを同時に解消した。
 
-3. **WordPress環境の起動**
+### 3. メインクエリ / `WP_Query` / `pre_get_posts` の使い分け
 
-   ```bash
-   yarn wp-start
-   ```
+- **実装**：一覧の表示件数・並び順は `pre_get_posts` フックで制御し、トップのMV・新着・人気などメインとは別の一覧は `new WP_Query()` で個別に取得。
+- **理由**：CSSの `nth-child` で件数を隠す方法では、ページネーションの計算（`max_num_pages`）と実表示がズレる不具合につながるため。
+- **効果**：ページネーションが常に正しく機能し、「どの一覧がどこで制御されているか」がコード上で明確になった。
 
-   - 初回はWordPressコアとプラグインのダウンロードに時間がかかります（5-10分程度）
-   - 完了すると `http://localhost:8888` でWordPressにアクセスできます
-   - **言語設定は自動的に日本語になります**（`.wp-env.json` の `WPLANG: "ja"` 設定により）
+### 4. タクソノミーへのACFフィールド追加によるタグのグループ分け
 
-4. **WordPress初期設定の適用**（初回のみ）
+- **実装**：WP標準ではフラットな構造しか持てないタグ（`post_tag`）に、ACFで「対象／分類／業界」のグループ情報を追加。取得は `get_field("tag_group", "post_tag_" . $tag->term_id)` の形式。
+- **理由**：タグをグループ見出し付きで一覧表示する要件があり、標準の器では表現しきれなかった。
+- **効果**：タクソノミー構造を壊さずに表示要件を満たせた。「標準の器で足りなくなったらACFで拡張する」という判断基準を得た。
 
-   ```bash
-   yarn wp-init
-   ```
+### 5. `:where()` による本文タイポグラフィの詳細度ゼロ設計
 
-   - タイムゾーン、パーマリンク、フロントページ、シード投稿を自動設定
-   - **テーマの有効化も自動で実行されます**（手動操作不要）
-   - 設定は `config/wp-options.json` でカスタマイズ可能
+- **実装**：`the_content` 出力領域の基本スタイルを `:where(.p-single__content)` で詳細度0にし、要素間の余白はLobotomized Owl（`> * + *`）で一括管理。
+- **理由**：Gutenbergでは執筆者がブロックに個別スタイルを追加する可能性があり、テーマ側の詳細度が高いと個別調整が効かなくなるため。
+- **効果**：後からの上書きが必ず勝つ構造になり、記事ごとの微調整とテーマの一貫性が両立できた。
 
-5. **開発サーバーの起動**（別ターミナル）
+### 6. 文書全体で一貫させた見出し階層
 
-   ```bash
-   yarn dev
-   ```
+- **実装**：h1（ヘッダーロゴ）→ h2（ページタイトル / セクション見出し）→ h3（カードタイトル / 本文大見出し）→ h4（本文小見出し）で統一。
+- **理由**：スクリーンリーダーの見出しジャンプは文書全体のh1〜h6を順に辿るため。
+- **効果**：支援技術での見出しナビゲーションが全ページで破綻しない構造になった。
 
-   - `http://localhost:5173` でVite開発サーバーが起動します
-   - このサーバーは起動したままでOKです
+### 7. カード全体をリンク領域にする定石パターン
 
-6. **WordPress管理画面にログイン**（初回のみ）
+- **実装**：`ul > li > article` でマークアップし、article内の擬似要素 `::after` を `inset: 0; z-index: 1` で全面に広げてリンク領域化。カード内のカテゴリリンクには個別に `z-index: 2` を指定。
+- **理由**：「aタグの中にaタグ」というHTML違反を避けつつ、カード全体をクリック可能にする必要があった。
+- **効果**：セマンティクスを保ったまま操作性を確保でき、カード内の別リンクも独立して機能する。
 
-   - URL: `http://localhost:8888/wp-admin/`
-   - ID: `admin`
-   - パスワード: `password`
-   - **言語設定は既に日本語になっています**
+### 8. カードの支援技術対応
 
----
+- **実装**：見出しに `id`、`article` に `aria-labelledby` を指定してカードのタイトルを支援技術に紐付け。投稿日には `u-sr-only` のラベルを追加し「投稿日: 2026.12.4」のように意味付きで読み上げさせる。
+- **理由**：日付やカテゴリ名は視覚的には文脈で伝わるが、読み上げでは「何の情報か」が欠落するため。
+- **効果**：カード一覧をスクリーンリーダーで辿った際に、各カードの内容と付随情報が正しく伝わるようになった。
 
-## 必要環境
+### 9. `height: 0` と `overflow: hidden` のセット運用
 
-### 共通
+- **実装**：タブパネルの非表示制御を `height: 0; overflow: hidden;` のセットで統一。
+- **理由**：`height: 0` 単体では「計算上の高さが0」なだけで中身は本来の高さのままレイアウトに影響し続け、footer上に謎の余白が発生する不具合を経験したため。
+- **効果**：非表示パネルがレイアウトへ影響しなくなり、同種の余白バグの再発を防ぐコーディング規約として定着した。
 
-- **Node.js**: v20.19.0以上（推奨: v22.12.0以上）
-- **パッケージマネージャー**: Yarn（npmは使用禁止）
+### 10. `1lh` を使ったアイコンとテキスト1行分の中央揃え
 
-### WordPress開発の場合のみ
+- **実装**：見出しの `font-size` / `line-height` を親に置いてsvgとテキスト双方に継承させ、margin-block: calc((1lh - アイコン高さ) / 2)` で1行分の高さに対して中央揃え。
+- **理由**：`1lh` はその要素自身のline-heightを参照するため継承設計が必要で、幅基準＋`height: auto` では計算に使う値と実描画高さが食い違うため。
+- **効果**：見出しが改行してもアイコンが1行目に正確に揃い、フォントサイズが流体的に変わっても崩れない。
 
-- **Docker Desktop**: 必須（**最新版推奨**）
-  - [インストール方法](https://www.docker.com/products/docker-desktop/)
-  - アプリを起動し、ステータスバーに`running`と表示されていることを確認
-  - **重要**: **Docker Compose V2が必要です**（Docker Desktop 4.4.2以降に標準で含まれています）
+- **`foreach` の参照渡し（`&`）**：ナビ配列の書き換えで参照渡しを使う場合、ループ後の `unset($link)` を忘れると次のループで前の参照が残りバグの温床になる。
 
-### Windows環境での動作について
+## 今後の課題・改善予定
 
-このプロジェクトは**Windows環境でも正しく動作します**。
-
-- すべてのスクリプトはクロスプラットフォーム対応（Node.jsスクリプトを使用）
-- パスの扱いは`path.resolve`や`path.join`を使用しており、Windowsでも正しく動作
-- Docker DesktopはWindowsでも動作します
-
-**注意事項**:
-
-- Windows環境でも`yarn`コマンドを使用してください（`npm`は使用禁止）
-- PowerShell、コマンドプロンプト、Git Bashのいずれでも動作します
-
----
-
-## WordPress開発の流れ
-
-### プロジェクト全体の構築フロー
-
-```
-1. 環境準備
-   ├─ Node.js v20.19.0以上をインストール
-   ├─ Docker Desktopをインストール・起動（Docker Compose V2が必要）
-   └─ プロジェクトをクローン or ZIP展開
-
-2. 依存関係のインストール
-   └─ yarn
-
-3. WordPress環境の構築
-   ├─ yarn wp-start（WordPress環境起動）
-   ├─ yarn wp-init（初期設定・テーマ有効化）
-   └─ yarn dev（開発サーバー起動）
-
-4. 開発作業
-   ├─ src/ フォルダでHTML/SCSS/JavaScript編集
-   ├─ wordpress/themes/{THEME_NAME}/ でPHP/テンプレート編集
-   ├─ WordPress管理画面でコンテンツ作成
-   └─ ブラウザで確認（localhost:8888）
-
-5. ビルド・デプロイ
-   └─ yarn build:wp（WordPress用ビルド）
-```
-
-### 開発作業の流れ
-
-1. **WordPress環境の起動**
-
-   ```bash
-   yarn wp-start
-   ```
-
-2. **開発サーバーの起動**（別ターミナル）
-
-   ```bash
-   yarn dev
-   ```
-
-3. **開発作業**
-
-   - **フロントエンド**: `src/` フォルダ内でHTML/SCSS/JavaScriptを編集
-   - **WordPressテーマ**: `wordpress/themes/{THEME_NAME}/` でPHP/テンプレートを編集
-   - **コンテンツ**: WordPress管理画面（`http://localhost:8888/wp-admin/`）でコンテンツを作成
-   - **確認**: `http://localhost:8888` で確認しながら開発
-
-4. **変更の反映**
-
-   - SCSS/JavaScript/PHP: 自動的に反映されます（HMR対応）
-
-5. **終了時**
-
-   ```bash
-   yarn wp-stop
-   ```
-
-### 重要なポイント
-
-- **テーマ有効化**: `yarn wp-init` で自動実行されるため、管理画面での手動操作は不要です
-- **開発サーバー**: `yarn dev` は起動したままでOKです。WordPress環境と併用できます
-- **ファイル編集**: `src/` フォルダ内のファイルを編集すると、自動的にWordPressテーマに反映されます
-- **ビルド**: 本番環境用のビルドは `yarn build:wp` で実行します
-- **言語設定**: `.wp-env.json` の `WPLANG: "ja"` 設定により、`yarn wp-start` 時に自動的に日本語版WordPressがインストールされ、言語設定も日本語になります
-
----
-
-## 開発コマンド一覧
-
-| 種別   | コマンド                          | 説明 |
-|--------|-----------------------------------|------|
-| 開発   | `yarn dev`                        | 開発サーバー起動（Vite + SCSS監視）→ `localhost:5173` |
-| ビルド | `yarn build:wp`                   | WordPress用ビルド → `wordpress/themes/{THEME_NAME}/` |
-| WP環境 | `yarn wp-start` / `yarn wp-stop`  | WordPress起動・停止 → `localhost:8888` |
-| WP環境 | `yarn wp-init`                    | WordPress初期設定（タイムゾーン・パーマリンク・フロントページ・シード投稿・**テーマ有効化**）。起動後に実行 |
-| WP環境 | `yarn wp-contents:export` / `import` | コンテンツのエクスポート・インポート |
-| WP環境 | `yarn update:wp-config`           | テーマ名・ディレクトリをプロジェクト名に合わせて更新 |
-| WP環境 | `yarn wp-post:create`              | 投稿の一括作成（`post-data/` のJSONファイルを使用） |
-| 品質   | `yarn format`                     | リント・フォーマット一括（自動修正） |
-| 品質   | `yarn format:check`               | チェックのみ |
-| 品質   | `yarn validate:acf`               | ACF-JSON のバリデーション |
-
-`update:wp-config` のオプション: `--wp-env` / `--style-css` / `--db`。詳細は [bin/README.md](./bin/README.md) を参照。
-
-品質チェックは手動で `yarn format`（自動修正）または `yarn format:check`（チェックのみ）を実行してください。
-
----
-
-## ガイドライン・ドキュメント
-
-| ドキュメント | 内容 |
-|--------------|------|
-| [doc/README.md](./doc/README.md) | doc 一覧・読み方 |
-| [doc/TEMPLATE_GUIDE.md](./doc/TEMPLATE_GUIDE.md) | テンプレート使い分け・パーツ構成 |
-| [doc/WORDPRESS_SETUP.md](./doc/WORDPRESS_SETUP.md) | WordPress 初期設定・プラグイン設定 |
-| [doc/ACF_GUIDE.md](./doc/ACF_GUIDE.md) | ACF（Advanced Custom Fields）設定 |
-| [doc/coding-guidelines.md](./doc/coding-guidelines.md) | コーディング規則 |
-| [doc/pr-issue-guidelines.md](./doc/pr-issue-guidelines.md) | PR・Issueガイドライン（任意） |
-| [bin/README.md](./bin/README.md) | スクリプト・プラグインの詳細 |
-
-**説明動画**: [こちら](https://defiant-crow-3a6.notion.site/1cd5a20fea11451aa4c16f1490afeea8?pvs=4)
-
----
-
-## 画像の格納先と読み込み方
-
-画像は **`src/assets/images/`** に配置します。開発時は PNG/JPG が WebP/AVIF に変換されます。
-
-- **HTML**: `<img src="/assets/images/logo.svg" alt="" width="200" height="200" />`
-- **JS**: `import src from "/assets/images/logo.svg";` で読み込み
-- **WordPress(PHP)**: `img_path('/logo.svg')` または `get_template_directory_uri() . '/assets/images/logo.svg'`（テーマの `functions-lib/func-url.php` で `img_path` を定義）
-- **SCSS/CSS（背景画像）**: `url("../images/画像ファイル名.webp")` で指定。SCSS は `src/assets/styles/` 直下または配下にあるため、相対パス `../images/` で `src/assets/images/` を参照する。PNG/JPG を指定した場合も、ビルド時に WebP に変換されて `wordpress/themes/{THEME_NAME}/assets/images/` に出力される（ハッシュなし）
-
-OGP・favicon は管理画面（外観→カスタマイズ / SEO Simple Pack）で設定。
-
----
-
-## ビルドとWordPress
-
-- **WordPress用ビルド**: `yarn build:wp` → `wordpress/themes/{THEME_NAME}/assets/` に出力（`{THEME_NAME}` はプロジェクトルート名）
-- **開発時**: Vite（`localhost:5173`）から資産を読み込み（HMR対応）
-- **本番時**: ビルド済み資産を読み込み（ハッシュ付きファイル名でキャッシュバスティング）
-
-**管理画面**: `http://localhost:8888/wp-admin/`（ID: `admin` / パス: `password`）
-
-**言語設定**: `.wp-env.json` の `WPLANG: "ja"` 設定により、`yarn wp-start` 時に自動的に日本語版WordPressがインストールされ、言語設定も日本語になります。
-
-**コンテンツ同期**: `yarn wp-contents:export` / `yarn wp-contents:import`（単一バックアップ。PRで変更内容を記載推奨）
-
----
-
-## 本番環境へのデプロイ
-
-### 環境判定の仕組み
-
-本テンプレートは、以下の2段階チェックで開発環境と本番環境を自動判定します：
-
-1. **manifest.dev.jsonの存在チェック**
-2. **URLチェック**（localhost/127.0.0.1のみ開発環境として扱う）
-
-**判定結果**:
-- `manifest.dev.json`が存在 かつ URLが`localhost` → 開発環境（Vite開発サーバーから読み込み）
-- それ以外 → 本番環境（ビルド済みファイルから読み込み）
-
-### デプロイ前の準備
-
-**⚠️ 重要**: 本番環境にアップロードする前に、**必ず`manifest.dev.json`が存在しないことを確認してください**。このファイルが本番環境に残っていると、サイトが正しく動作しなくなります。
-
-```bash
-# 1. ビルド実行（自動的にmanifest.dev.jsonが削除される）
-yarn build:wp
-
-# 2. 確認: ビルド済みファイルが生成されているか
-ls wordpress/themes/{THEME_NAME}/assets/js/script.*.js
-ls wordpress/themes/{THEME_NAME}/assets/styles/style.*.css
-# → ハッシュ付きファイル名が存在することを確認
-
-# 3. 確認: manifest.dev.jsonが削除されているか（必須）
-ls wordpress/themes/{THEME_NAME}/manifest.dev.json
-# → 存在しないことを確認（存在する場合は手動で削除）
-# このファイルが本番環境に残っていると、サイトが動作しなくなります
-```
-
-### デプロイ方法
-
-#### 1. WPvividでのアップロード
-
-```bash
-# 1. ビルド実行
-yarn build:wp
-
-# 2. WPvividでテーマをアップロード
-```
-
-#### 2. FTPでの直接アップロード
-
-```bash
-# 1. ビルド実行
-yarn build:wp
-
-# 2. FTPでテーマディレクトリをアップロード
-# wordpress/themes/{THEME_NAME}/ をアップロード
-```
-
-※DBは別途アップロードが必要です
-
-### デプロイ後の確認事項
-
-1. **アセットが正しく読み込まれているか確認**
-   - ブラウザの開発者ツールで、CSS/JSファイルが正しく読み込まれているか確認
-   - ファイル名にハッシュが含まれていることを確認（例: `script.a1b2c3.js`）
-
-2. **キャッシュがクリアされているか確認**
-   - ブラウザのキャッシュをクリアして再読み込み
-   - ファイル名が変更されているため、自動的にキャッシュがクリアされる
-
-3. **エラーがないか確認**
-   - ブラウザのコンソールでエラーがないか確認
-   - WordPressのデバッグログを確認（`WP_DEBUG`が有効な場合）
-
-### セキュリティ対策
-
-本テンプレートは以下のセキュリティ対策を実装しています：
-
-- **`.gitignore`で除外**: `manifest.dev.json`と`.vite/`をGit管理外に
-- **ビルド時の自動クリーンアップ**: `yarn build:wp`実行時に`manifest.dev.json`が自動削除される
-- **URLチェック**: localhost/127.0.0.1のみ開発環境として扱う（FTP誤アップロード対策）
-
-これにより、どのデプロイ方法でも安全に運用できます。
-
----
-
-## よくある問題と解決方法
-
-### Node.jsのバージョンエラー
-
-**症状**: `yarn`や`yarn dev`を実行するとNode.jsのバージョンエラーが出る
-
-**解決方法**:
-
-1. Node.jsのバージョンを確認: `node --version`
-2. Node.js v20.19.0以上が必要です（推奨: v22.12.0以上）
-3. [Node.js公式サイト](https://nodejs.org/)から最新のLTS版をインストール
-4. インストール後、ターミナルを再起動してから再度`yarn`を実行
-
-### Docker Compose V2が必要です
-
-**症状**: `yarn wp-start`を実行すると`docker-compose`コマンドが見つからない、またはエラーが出る
-
-**原因**: このプロジェクトは`@wordpress/env` 10を使用しており、Docker Compose V2が必要です。Docker Compose V1は2023年7月に更新が停止され、現在はサポートされていません。
-
-**解決方法**:
-
-1. **Docker Desktopを最新版にアップデート**
-   - [Docker Desktop公式サイト](https://www.docker.com/products/docker-desktop/)から最新版をダウンロード・インストール
-   - Docker Desktop 4.4.2以降には、Docker Compose V2が標準で含まれています
-   - インストール後、Docker Desktopを再起動してください
-
-2. **Docker Compose V2がインストールされているか確認**
-   ```bash
-   docker compose version
-   ```
-   - 正常に動作する場合: `Docker Compose version v2.x.x` と表示されます
-   - エラーが出る場合: Docker Desktopを最新版にアップデートしてください
-
-3. **注意事項**
-   - Docker Compose V2では、コマンドが`docker-compose`（ハイフンあり）から`docker compose`（スペース区切り）に変更されました
-   - ただし、Docker Desktop 4.4.2以降では、`docker-compose`コマンドが自動的に`docker compose`にエイリアスされるため、既存のスクリプトでも動作します
-   - `@wordpress/env`は内部で`docker compose`コマンドを使用するため、特に設定変更は不要です
-
-### WordPress環境が起動しない
-
-**症状**: `yarn wp-start`を実行してもエラーが出る
-
-**エラーメッセージ例**:
-```
-✖ Error while running docker compose command.
-unable to get image 'mariadb:lts': Cannot connect to the Docker daemon at unix:///Users/.../.docker/run/docker.sock. Is the docker daemon running?
-```
-
-**解決方法**:
-
-1. **Docker Desktopが起動しているか確認**
-   - Docker Desktopアプリを起動してください
-   - ステータスバー（Mac）またはタスクトレイ（Windows）に`running`と表示されていることを確認
-   - 起動していない場合は、Docker Desktopアプリを起動してから数秒待ってから再度`yarn wp-start`を実行
-
-2. **Docker Compose V2がインストールされているか確認**（上記の「Docker Compose V2が必要です」を参照）
-
-3. **ポート8888が使用されていないか確認**
-   ```bash
-   # Mac/Linux
-   lsof -i :8888
-   
-   # Windows (PowerShell)
-   netstat -ano | findstr :8888
-   ```
-   - 他のプロセスが使用している場合は、そのプロセスを停止するか、`yarn wp-stop`を実行
-
-4. **Windows環境での特別な対処法**
-   - `yarn wp-start`が正しく動作しない場合、`.wp-env.json`の`plugins`配列を一時的に削除して再実行してみてください
-   - 手順：
-     1. `.wp-env.json`を開く
-     2. `"plugins": [...]`の部分を削除または空配列`[]`に変更
-     3. `yarn wp-start`を実行
-     4. 起動に成功したら、必要に応じてプラグイン設定を戻す
-   - これはWindows環境でのDocker Compose実行時の問題によるものです
-
-5. **一度`yarn wp-stop`を実行してから、再度`yarn wp-start`を実行**
-
-6. **それでも解決しない場合**
-   - Docker Desktopを再起動
-   - `yarn wp-stop`を実行してから、Docker Desktopを再起動し、再度`yarn wp-start`を実行
-
-### wp-initが失敗する
-
-**症状**: `yarn wp-init`を実行すると「WordPress が起動しませんでした」というエラーが出る
-
-**解決方法**:
-
-1. **WordPress環境が起動しているか確認**
-   ```bash
-   yarn wp-start
-   ```
-   - 起動に時間がかかる場合があります（初回は5-10分程度）
-
-2. **少し待ってから再実行**
-   ```bash
-   yarn wp-init
-   ```
-   - 初回起動時は時間がかかる場合があります
-
-3. **それでも失敗する場合**
-   - Docker Desktopを再起動
-   - `yarn wp-stop` → `yarn wp-start` を再度実行
-   - 数分待ってから `yarn wp-init` を再実行
-
-### テーマが表示されない
-
-**症状**: WordPress管理画面でテーマが表示されない
-
-**解決方法**:
-
-1. `yarn wp-start`実行時にテーマパスが正しく更新されているか確認
-2. `wordpress/themes/{THEME_NAME}/style.css`が存在するか確認
-3. `yarn wp-init`を実行してテーマを自動有効化（手動操作不要）
-4. それでも表示されない場合は、管理画面の「外観」→「テーマ」で手動有効化
-
-### SCSSの変更が反映されない
-
-**症状**: SCSSファイルを編集しても変更が反映されない
-
-**解決方法**:
-
-1. `yarn dev`が起動しているか確認
-2. `bin/watch-scss-globs.js`がバックグラウンドで実行されているか確認
-3. Viteサーバーを再起動
-
-### PHPファイルの変更が反映されない、または反映が遅い
-
-**症状**: PHPファイルを編集しても変更が反映されない、または反映が遅い
-
-**解決方法**:
-
-1. **監視対象の確認**: `vite.config.js` で監視対象が正しく設定されているか確認
-   - ルートPHPファイル（`*.php`）
-   - テンプレートパーツ（`template-parts/**/*.php`）
-   - 機能別関数ファイル（`functions-lib/**/*.php`、ただし`functions-lib/lib/`は除外）
-2. **パフォーマンス改善**: 
-   - ライブラリファイル（`functions-lib/lib/`）は監視対象外のため、変更してもリロードされません。必要に応じて手動リロードしてください
-   - 監視対象を絞ることで、ファイル変更の検知が高速化されます
-3. **キャッシュクリアと再起動**:
-   - ブラウザのキャッシュをクリアして再読み込み
-   - `yarn dev`を停止してから、`yarn`で依存関係を再インストール
-   - `yarn dev`を再度起動して確認
-4. **Viteサーバーの再起動**: 上記で解決しない場合は、`yarn dev`を再起動
-
-### Sassの警告が出る
-
-**症状**: `@use "layouts/**";` などで `The default namespace "**" is not a valid Sass identifier.` が表示される
-
-**説明**:
-
-- `vite-plugin-sass-glob-import` が解決するため実害はありません
-- **警告は無視してOK** という運用です
-
-### 画像が表示されない
-
-**症状**: 画像が表示されない、または404エラーが出る
-
-**解決方法**:
-
-1. 画像の配置場所を確認: `src/assets/images/`
-2. WordPress開発時は、PHPから画像を読み込む場合は`img_path()`関数を使用
-3. ビルド後に画像が出力されているか確認（`wordpress/themes/{THEME_NAME}/assets/images/`）
-
-### プラグインがインストールされない
-
-**症状**: `yarn wp-start`実行後、プラグインがインストールされない
-
-**解決方法**:
-
-1. `.wp-env.json`の`plugins`配列を確認
-2. プラグインのURLが正しいか確認
-3. 初回起動時はプラグインのダウンロードに時間がかかります（5-10分程度）
-4. ネットワーク接続を確認
-
----
-
-## 静的サイト開発について（補足）
-
-このテンプレートは静的サイト開発にも対応していますが、**WordPress開発を主な用途として想定**しています。
-
-静的サイト開発を行う場合:
-
-1. **依存関係のインストール**
-
-   ```bash
-   yarn
-   ```
-
-2. **開発サーバーの起動**
-
-   ```bash
-   yarn dev
-   ```
-
-3. **ブラウザで確認**: `http://localhost:5173` にアクセス
-
-詳細は各ドキュメントを参照してください。
-
----
-
-## ライセンス
-
-このプロジェクトのライセンスについては、[LICENSE](./LICENSE) ファイルを参照してください。
-
-**概要:**
-- 個人・法人での実案件使用は許可
-- 改変・カスタマイズは自由
-- 成果物の商用利用は許可
-- テンプレート自体の再配布・再販売は禁止
-
-詳細は [LICENSE](./LICENSE) ファイルをご確認ください。
+- FAQのACF PROリピーターフィールドへの移行（現在はカスタムフィールド＋forループの連番運用）
+- ビルド成果物のデプロイフロー整備（ハッシュ付きアセットと `manifest.json` の一括反映）
+- 記事数増加を見据えた表示パフォーマンスの計測と改善
