@@ -10,7 +10,7 @@
 - **言語・CMS**：HTML / SCSS / JavaScript / PHP（WordPress オリジナルテーマ）
 - **CSS設計**：FLOCSS + BEM
 - **ライブラリ**：Swiper.js
-- **プラグイン**：Advanced Custom Fields（無料版）、SEO SIMPLE PACK
+- **プラグイン**：Advanced Custom Fields、SEO SIMPLE PACK
 - **開発環境**：Vite、`@wordpress/env`（Docker）
 
 ## 主な実装機能
