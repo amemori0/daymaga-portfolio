@@ -1,5 +1,9 @@
 <?php
 
+if (!defined("ABSPATH")) {
+    exit; // 直接アクセス禁止
+}
+
 /**
  * Vite対応のスクリプトとスタイル読み込み処理
  * 環境変数（WP_DEBUG）とmanifestファイルを活用した環境判定

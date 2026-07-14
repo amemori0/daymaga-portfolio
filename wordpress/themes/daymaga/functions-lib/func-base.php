@@ -1,5 +1,9 @@
 <?php
 
+if (!defined("ABSPATH")) {
+    exit; // 直接アクセス禁止
+}
+
 /**
  * func-base
  * WordPressの基本的な機能を設定・追加するための関数群

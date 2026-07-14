@@ -1,5 +1,9 @@
 <?php
 
+if (!defined("ABSPATH")) {
+    exit; // 直接アクセス禁止
+}
+
 /**
  * func-url
  * パス・URL 用ヘルパー

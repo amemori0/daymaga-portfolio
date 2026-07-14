@@ -1,5 +1,9 @@
 <?php
 
+if (!defined("ABSPATH")) {
+    exit; // 直接アクセス禁止
+}
+
 /**
  * TGM Plugin Activation設定
  * 推奨・必須プラグインのインストールを促す

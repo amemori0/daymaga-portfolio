@@ -129,7 +129,12 @@ export default function convertAndOptimizeImages(options = {}) {
   };
 
   // 開発環境での画像処理を初期化する関数
+  // buildStart / configureServer の両方から呼ばれ得るため、二重初期化（watcher重複）を防ぐ
+  let devImageProcessingStarted = false;
   const initDevImageProcessing = () => {
+    if (devImageProcessingStarted) return;
+    devImageProcessingStarted = true;
+
     // rootは既にsrcディレクトリなので、そのままassets/imagesを追加
     const srcImagesDir = resolve(root, "assets/images");
     const wpImagesDir = resolve(themeDir, "assets/images");

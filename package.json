@@ -1,11 +1,10 @@
 {
-  "name": "wp-template",
+  "name": "daymaga-portfolio",
   "version": "1.0.0",
   "type": "module",
   "main": "index.js",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "@splidejs/splide": "^4.1.4",
     "@wordpress/env": "^11.0.0",
     "autoprefixer": "^10.4.19",
     "kiso.css": "^1.1.4",

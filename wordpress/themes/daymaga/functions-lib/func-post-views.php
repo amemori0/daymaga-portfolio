@@ -1,5 +1,9 @@
 <?php
 
+if (!defined("ABSPATH")) {
+    exit; // 直接アクセス禁止
+}
+
 // ============================================================
 // 記事の閲覧数カウント機能
 // ============================================================
@@ -10,7 +14,7 @@
  * @param int $postID 投稿ID
  * @return string 表示用の閲覧数文字列（例: "1,234 回閲覧"）
  */
-function getPostViews($postID) {
+function daymaga_get_post_views($postID) {
     $count_key = 'post_views_count';
     $count = get_post_meta($postID, $count_key, true);
 
@@ -29,7 +33,7 @@ function getPostViews($postID) {
  *
  * @param int $postID 投稿ID
  */
-function setPostViews($postID) {
+function daymaga_set_post_views($postID) {
     // Botのアクセスはカウント対象外にする
     // （検索エンジンのクローラーが「人気順」の精度を下げてしまうのを防ぐため）
     if (

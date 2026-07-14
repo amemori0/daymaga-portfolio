@@ -1,5 +1,9 @@
 <?php
 
+if (!defined("ABSPATH")) {
+    exit; // 直接アクセス禁止
+}
+
 /**
  * func-acf.php
  * ACF Local JSON 運用の基本設定

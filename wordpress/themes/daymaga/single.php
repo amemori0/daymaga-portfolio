@@ -10,7 +10,7 @@ get_header(); ?>
     while (have_posts()):
 
       the_post();
-      setPostViews(get_the_ID()); // 閲覧数カウント
+      daymaga_set_post_views(get_the_ID()); // 閲覧数カウント
       $post_categories = get_the_category();
       ?>
 

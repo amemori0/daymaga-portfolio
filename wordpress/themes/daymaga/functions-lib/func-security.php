@@ -1,4 +1,8 @@
 <?php
+
+if (!defined("ABSPATH")) {
+    exit; // 直接アクセス禁止
+}
 /**
  * func-security
  *  セキュリティ対策
