@@ -1,5 +1,7 @@
 # デイマガ｜コンサル案件・ノウハウ発信メディア
 
+![デイマガ トップページ](doc/screenshot/screenshot-top.png)
+
 ## プロジェクト概要
 
 - **サイト名**：デイマガ（DayMaga）
