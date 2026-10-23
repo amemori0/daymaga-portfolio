@@ -6,12 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <?php include_once "template-parts/adjust-admin-bar.php"; ?>
-  <title>
-    <?php
-    wp_title("|", true, "right");
-    bloginfo("name");
-    ?>
-  </title>
+  <?php // title-tagサポート（func-base.php）によりwp_head()内で<title>が自動出力される ?>
   <?php wp_head(); ?>
   <script type="speculationrules">
     {
